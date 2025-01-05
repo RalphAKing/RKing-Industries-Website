@@ -1527,6 +1527,11 @@ def not_found(e):
 @app.route('/logout')
 def logout():
     session.pop('userid', None)
+    try:
+        session.pop('token', None)
+        session.pop('id', None)
+    except:
+        pass
     return redirect('/') 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
