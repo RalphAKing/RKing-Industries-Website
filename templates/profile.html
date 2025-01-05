@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile | RKing Industries</title>
+    <link rel="icon" href="../static/logo.png" type="image/icon type">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-color: #f8fafc;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 2rem;
+        }
+
+        .profile-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #ef4444;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .success-message {
+            color: #22c55e;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="home-btn">
+        <i class="fas fa-home"></i>
+        Home
+    </a>
+
+    <div class="container">
+        <div class="profile-section">
+            <h2 class="section-title">Change Password</h2>
+            {% if success %}
+            <div class="success-message">{{ success }}</div>
+            {% endif %}
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+            <form action="/profile" method="POST" onsubmit="return validatePasswordChange()">
+                <input type="hidden" name="action" value="change_password">
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" name="current_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" name="new_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password" id="confirm-password" name="confirm_password" required>
+                </div>
+                <button type="submit" class="submit-btn">Change Password</button>
+                <div id="password-error" class="error-message"></div>
+                </input>
+            </form>
+        </div>
+        {% if link %}
+            <div class="profile-section">
+                <h2 class="section-title">Link Beehive Account</h2>
+                {% if success2 %}
+                <div class="success-message">{{ success2 }}</div>
+                {% endif %}
+                {% if error2 %}
+                <div class="error-message">{{ error2 }}</div>
+                {% endif %}
+                <form action="/profile" method="POST">
+                    <input type="hidden" name="action" value="link_beehive">
+                    <div class="form-group">
+                        <label for="beehive-username">Beehive Username</label>
+                        <input type="text" id="beehive-username" name="beehive_username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="beehive-password">Beehive Password</label>
+                        <input type="password" id="beehive-password" name="beehive_password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Link Account</button>
+                </form>
+            </div>
+        {% endif %}
+
+        <div class="profile-section">
+            <h2 class="section-title">Delete Account</h2>
+            {% if error3 %}
+            <div class="error-message">{{ error3 }}</div>
+            {% endif %}
+            <form action="/profile" method="POST" onsubmit="return confirmDelete()">
+                <input type="hidden" name="action" value="delete_account">
+                <div class="form-group">
+                    <label for="delete-password">Enter Password to Confirm</label>
+                    <input type="password" id="delete-password" name="password" required>
+                </div>
+                <button type="submit" class="delete-btn">Delete Account</button>
+            </input>
+            </form>
+        </div>
+    </div>
+      <script>
+          const passwordChangeForm = document.querySelector('form[action="/profile"]');
+          const newPassword = document.getElementById('new-password');
+          const confirmPassword = document.getElementById('confirm-password');
+          const submitBtn = passwordChangeForm.querySelector('.submit-btn');
+
+          function validatePasswords() {
+              if (newPassword.value !== confirmPassword.value) {
+                  confirmPassword.setCustomValidity('Passwords do not match');
+                  submitBtn.disabled = true;
+              } else {
+                  confirmPassword.setCustomValidity('');
+                  submitBtn.disabled = false;
+              }
+          }
+
+          newPassword.addEventListener('input', validatePasswords);
+          confirmPassword.addEventListener('input', validatePasswords);
+
+          // Add visual feedback for matching status
+          confirmPassword.addEventListener('input', function() {
+              if (this.value !== newPassword.value) {
+                  this.style.borderColor = '#e74c3c';
+              } else {
+                  this.style.borderColor = '#2ecc71';
+              }
+          });
+
+          function confirmDelete() {
+              return confirm('Are you sure you want to delete your account? This action cannot be undone.');
+          }
+      </script>
+  </body>
+</html>

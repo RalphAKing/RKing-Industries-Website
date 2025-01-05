@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vape Detectors | RKing Industries</title>
+    <link rel="icon" href="../static/logo.png" type="image/icon type">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-color: #f8fafc;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem;
+        }
+
+        .product-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .product-info {
+            padding: 2rem;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-button {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            flex: 1;
+        }
+
+        .buy-button {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .panel-button {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .buy-button:hover {
+            background: var(--secondary-color);
+        }
+
+        .panel-button:hover {
+            background: var(--primary-color);
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .home-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .product-section {
+                grid-template-columns: 1fr;
+            }
+
+            .button-container {
+                flex-direction: column;
+            }
+
+            .product-title {
+                font-size: 2rem;
+            }
+
+            .product-info {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="home-btn">
+        <i class="fas fa-home"></i>
+        Home
+    </a>
+
+    <div class="container">
+        <div class="product-section">
+            <div class="product-info">
+                <h1 class="product-title">Smart Vape Detection System</h1>
+                <p class="product-description">
+                    Our advanced vape detection system utilizes cutting-edge sensor technology to detect vaping activity in real-time. Perfect for schools, businesses, and public facilities, this system provides immediate alerts and detailed analytics through our cloud-based dashboard. Features include:
+                    <br><br>
+                    • Real-time detection and alerts
+                    <br>
+                    • Cloud-based monitoring system
+                    <br>
+                    • Easy installation and maintenance
+                    <br>
+                    • Advanced analytics and reporting
+                    <br>
+                    • 24/7 technical support
+                </p>
+                <div class="button-container">
+                    <a href="/store" class="action-button buy-button">Buy Now</a>
+                    <a href="/vapedetectors/panel" class="action-button panel-button">Control Panel</a>
+                </div>
+            </div>
+            <img src="/static/images/coming soon.png" alt="Vape Detector" class="product-image">
+        </div>
+    </div>
+</body>
+</html>

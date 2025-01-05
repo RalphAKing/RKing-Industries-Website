@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RKing Industries | Innovation & Technology Solutions</title>
+    <link rel="icon" href="../static/logo.png" type="image/icon type">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-color: #f8fafc;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            height: 100%;
+            width: 100%;
+            background: url('/static/images/homepage.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-color);
+        }
+
+        .overlay {
+            background: var(--overlay-color);
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            backdrop-filter: blur(3px);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;  /* Added horizontal padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;  /* Ensures padding is included in width */
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-icons a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            margin-right: 2rem; 
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            white-space: nowrap;  
+        }
+
+
+        .nav-links a:hover {
+            background: var(--primary-color);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleFade 1s ease-in;
+        }
+
+        .strapline {
+            font-size: 1.8rem;
+            margin: 1rem 0;
+            font-weight: 300;
+            animation: fadeIn 1s ease-in 0.5s both;
+        }
+
+        .mission {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 2rem 0;
+            line-height: 1.8;
+            animation: fadeIn 1s ease-in 1s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-in 1.5s both;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .primary-cta {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .primary-cta:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .secondary-cta {
+            border: 2px solid var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .secondary-cta:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        @keyframes titleFade {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                background: rgba(0, 0, 0, 0.8); 
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-right: 0;
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                min-width: 80px;
+                text-align: center;
+            }
+
+            .container {
+                padding: 1rem;
+                margin-top: 120px; 
+            }
+
+            .title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+
+            .strapline {
+                font-size: 1.2rem;
+                margin: 0.5rem 0;
+            }
+
+            .mission {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                padding: 0 0.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+                padding: 0 2rem;
+                box-sizing: border-box;
+            }
+
+            .cta-button {
+                width: 100%;
+                box-sizing: border-box;
+                margin: 0;
+                padding: 1rem;
+                display: block;
+            }
+
+            .social-icons {
+                gap: 1rem;
+            }
+
+            .social-icons a {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .strapline {
+                font-size: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    
+    <nav class="navbar">
+        <div class="social-icons">
+            <a href="https://www.facebook.com/rking.industries" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com/RKingIndustrie" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/rking_industries/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/RalphAKing" target="_blank"><i class="fa-solid fa-code-branch"></i></a>
+        </div>
+        
+        <div class="nav-links">
+            {% if not loggedin %}
+                <a href="/login">Login</a>
+                <a href="/signup">Sign Up</a>
+            {% endif %}
+            {% if loggedin %}
+                <a href="/profile">Profile</a>
+                <a href="/logout">Logout</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="title">RKing Industries</h1>
+        <h2 class="strapline">Pioneering Tomorrow's Technology Today</h2>
+        <p class="mission">
+            We are at the forefront of technological innovation, specializing in cutting-edge solutions 
+            from 3D printing to advanced server infrastructure. As a leading UK-based technology company, 
+            we're committed to delivering exceptional services that drive the future of digital transformation. 
+            Our expertise spans across multiple domains, ensuring that we can meet any technological challenge 
+            with innovative, sustainable solutions.
+        </p>
+        <div class="cta-buttons">
+            <a href="/store" class="cta-button primary-cta">Explore Our Solutions</a>
+            <a href="/contact" class="cta-button secondary-cta">Get in Touch</a>
+        </div>
+    </div>
+</body>
+</html>

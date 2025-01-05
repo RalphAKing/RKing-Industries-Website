@@ -1,0 +1,20 @@
+#mongodb
+mongodbaddress: mongodb connection string
+
+#support email
+supportemail: email
+supportphone: phone number
+
+#products
+products: [
+  {
+    'title': 'Title',
+    'description': 'Description.',
+    'price': 'Price i.e 10.00 or Free',
+    'image': '/static/images/coming soon.png',
+    'link': 'website link'
+  }
+]
+
+#website
+website: http://127.0.0.1:5000

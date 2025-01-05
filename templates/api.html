@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/logo.png" type="image/icon type">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+     
+    <title>API Documentation</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-color: #f8fafc;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-top: 5rem;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        pre {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+            color: var(--text-color);
+        }
+
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: var(--text-color);
+        }
+
+        .example, .error-example {
+            background: rgba(37, 99, 235, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .error-example {
+            background: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid #f44336;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .warning {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid #f44336;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .home-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+    </style>
+
+</head>
+<body>
+    <a href="/" class="home-btn">
+        <i class="fas fa-home"></i>
+        Home
+    </a>
+    
+    <h1>API Documentation</h1>
+    <p>This documentation covers the usage of the API for managing vape detectors, including fetching data, toggling issue statuses, and error handling. This API is designed to be used with a valid API key and provides several endpoints for different functionalities.</p>
+    
+    <p><a href="/">Back to Home</a></p>
+
+    <!-- Add warning message here -->
+    <div class="warning">
+        <p><strong>Remember: Do not expose your API key to the frontend. Keep it secure and use server-side code to handle API requests.</strong></p>
+    </div>
+
+    <h2>Base URL</h2>
+    <pre><code>https://rkingindustries.com/api</code></pre>
+
+    <h2>Authentication</h2>
+    <p>To access the API, you need an API key. You can find your API key on the page <a href="/vapedetectors/panel" target="_blank">Panel</a>.</p>
+
+    <h2>Rate Limitation</h2>
+    <p>There is no rate limitation on API requests.</p>
+
+    <h2>Security</h2>
+    <p>Ensure that your API key is kept confidential and only used in secure environments. Avoid exposing it in public or client-side code.</p>
+
+    <h2>Support</h2>
+    <p>If you encounter any issues or need assistance, please contact us at <a href="mailto:support@rkingindustries.com">support@rkingindustries.com</a>.</p>
+
+    <h2>Endpoints</h2>
+
+    <h3>Fetch Data</h3>
+    <h4>POST /api</h4>
+    <p>Fetch various data related to vape detectors.</p>
+    <p><strong>Request Body:</strong></p>
+    <pre><code>{
+  "api_key": "your_api_key",
+  "type": "fetch",
+  "identity": "issues/status/history"
+}</code></pre>
+
+    <p><strong>Response:</strong></p>
+    <ul>
+        <li><strong>200 OK</strong>: Successfully fetched the data.</li>
+        <li><strong>400 Bad Request</strong>: Missing or invalid parameters.</li>
+        <li><strong>404 Not Found</strong>: Issue not found (if applicable).</li>
+    </ul>
+
+    <div class="example">
+        <p><strong>Example Request Issues:</strong></p>
+        <pre><code>{
+  "api_key": "12345",
+  "type": "fetch",
+  "identity": "issues"
+}</code></pre>
+        <p><strong>Example Response Issues:</strong></p>
+        <pre><code>{
+  "Issues": {
+    "0": {
+      "room": "101",
+      "issue": "vape",
+      "time": "28-07-2024 14:45",
+      "resolved": false
+    }
+  }
+}</code></pre>
+    </div>
+
+    <div class="example">
+        <p><strong>Example Request Status:</strong></p>
+        <pre><code>{
+  "api_key": "12345",
+  "type": "fetch",
+  "identity": "status"
+}</code></pre>
+        <p><strong>Example Response Status:</strong></p>
+        <pre><code>{
+    'status': {
+        'room1': {
+            'last_ping': '28-07-2024 10:24', 
+            'status': 'offline'
+        }, 
+        'room2': {
+            'last_ping': '28-07-2024 11:30', 
+            'status': 'offline'
+        }
+    }
+}</code></pre>
+    </div>
+
+
+    <div class="example">
+        <p><strong>Example Request History:</strong></p>
+        <pre><code>{
+  "api_key": "12345",
+  "type": "fetch",
+  "identity": "history"
+}</code></pre>
+        <p><strong>Example Response History:</strong></p>
+        <pre><code>{
+    'history': {
+        'room1': 3,
+         'room2': 5,
+          'room32': 10
+    }
+}</code></pre>
+    </div>
+
+    <h3>Toggle Issue Status</h3>
+    <h4>POST /api</h4>
+    <p>Toggle the resolved status of an issue.</p>
+    <p><strong>Request Body:</strong></p>
+    <pre><code>{
+  "api_key": "your_api_key",
+  "type": "toggle",
+  "issue_id": "issue_id"
+}</code></pre>
+
+    <p><strong>Response:</strong></p>
+    <ul>
+        <li><strong>200 OK</strong>: Successfully toggled the issue status.</li>
+        <li><strong>400 Bad Request</strong>: Missing or invalid parameters.</li>
+        <li><strong>404 Not Found</strong>: Issue not found.</li>
+    </ul>
+
+    <div class="example">
+        <p><strong>Example Request:</strong></p>
+        <pre><code>{
+  "api_key": "12345",
+  "type": "toggle",
+  "issue_id": "0"
+}</code></pre>
+        <p><strong>Example Response:</strong></p>
+        <pre><code>{
+  "message": "success"
+}</code></pre>
+    </div>
+
+    <h2>Error Handling</h2>
+    <h3>400 Bad Request</h3>
+    <p>Occurs when required parameters are missing or invalid.</p>
+
+    <div class="error-example">
+        <p><strong>Example Response:</strong></p>
+        <pre><code>{
+  "api_key": "API key missing"
+}</code></pre>
+    </div>
+
+    <h3>404 Not Found</h3>
+    <p>Occurs when the requested resource is not found.</p>
+
+    <div class="error-example">
+        <p><strong>Example Response:</strong></p>
+        <pre><code>{
+  "error": "Issue not found"
+}</code></pre>
+    </div>
+
+    <h2>Examples of Error Responses</h2>
+
+    <div class="error-example">
+        <p><strong>Missing API Key</strong></p>
+        <pre><code>{
+  "api_key": "API key missing"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Missing Type</strong></p>
+        <pre><code>{
+  "type": "Type of message missing"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Invalid API Key</strong></p>
+        <pre><code>{
+  "api_key": "Invalid API key"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Invalid Reason</strong></p>
+        <pre><code>{
+  "Invalid Reason": "Invalid reason provided"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Missing Room</strong></p>
+        <pre><code>{
+  "room": "Room not provided"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Missing Reason</strong></p>
+        <pre><code>{
+  "reason": "Reason of api request missing"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Missing Identity</strong></p>
+        <pre><code>{
+  "identity": "No identity provided"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Invalid Identity</strong></p>
+        <pre><code>{
+  "Invalid Identity": "Invalid identity provided"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Missing Issue ID</strong></p>
+        <pre><code>{
+  "issue_id": "No issue_id provided"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Issue Not Found</strong></p>
+        <pre><code>{
+  "error": "Issue not found"
+}</code></pre>
+    </div>
+
+    <div class="error-example">
+        <p><strong>Type Error</strong></p>
+        <pre><code>{
+  "Type Error": "Invalid type provided"
+}</code></pre>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FastHive Info | RKing Industries</title>
+    <link rel="icon" href="../static/logo.png" type="image/icon type">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-color: #f8fafc;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 2rem;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-item {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .feature-item:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .description {
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="home-btn">
+        <i class="fas fa-home"></i>
+        Home
+    </a>
+
+    <div class="container">
+        <div class="info-section">
+            <h1 class="section-title">What is FastHive?</h1>
+            <p class="description">
+                FastHive is an enhanced, modernized version of Beehive designed to provide a superior user experience. 
+                Built with cutting-edge technology, FastHive delivers improved performance, enhanced security, and a more 
+                responsive interface while maintaining all the essential features you rely on.
+            </p>
+            
+            <h2>Key Improvements</h2>
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <strong>Enhanced Speed:</strong> Optimized loading times and faster response rates for all operations
+                </li>
+                <li class="feature-item">
+                    <strong>Better Security:</strong> Advanced encryption protocols and secure authentication methods
+                </li>
+                <li class="feature-item">
+                    <strong>Modern Interface:</strong> Responsive design that works seamlessly across all devices
+                </li>
+                <li class="feature-item">
+                    <strong>Real-time Updates:</strong> Instant synchronization of data and notifications
+                </li>
+                <li class="feature-item">
+                    <strong>Improved Reliability:</strong> More stable connection and reduced downtime
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>Getting Started</h2>
+            <p class="description">
+                To use FastHive, simply link your existing Beehive account through your profile settings. All your data 
+                will be automatically synchronized, providing you with an immediate upgrade to a faster, more secure experience.
+            </p>
+            <div class="info-section">
+                <div class="cta-buttons" style="display: flex; gap: 1rem;">
+                    <a href="/profile" class="cta-button primary-cta" style="flex: 1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center; background: var(--primary-color); color: white;">Link Account</a>
+                    <a href="/fasthive" class="cta-button secondary-cta" style="flex: 1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center; border: 2px solid var(--primary-color); color: var(--text-color);">Go to FastHive</a>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</body>
+</html>
