@@ -430,19 +430,16 @@
 
         function toggleAPIKey() {
             const apiKeyContainer = document.getElementById('apiKeyContainer');
-            const apiKeyText = document.getElementById('apiKeyText');
             if (apiKeyContainer.classList.contains('blurred')) {
                 apiKeyContainer.classList.remove('blurred');
-                apiKeyText.textContent = {{ apikey }}; // Replace with your actual API key
             } else {
                 apiKeyContainer.classList.add('blurred');
-                apiKeyText.textContent = {{ apikey }};
             }
         }
 
         function copyAPIKey() {
-            const apiKeyText = document.getElementById('apiKeyText').textContent;
-            navigator.clipboard.writeText(apiKeyText).then(() => {
+            const apiKey = "{{ apikey }}"; // Get the actual API key using Jinja
+            navigator.clipboard.writeText(apiKey).then(() => {
                 alert('API key copied to clipboard.');
             }).catch(err => {
                 console.error('Failed to copy API key: ', err);
