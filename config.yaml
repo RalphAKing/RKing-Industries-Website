@@ -1,6 +1,6 @@
 #mongodb
-# mongodbaddress: mongodb connection string
-mongodbaddress: mongodb://rking:Gsx1300rD(%40%40%40)@rk1.rkinghosting.com:2000
+mongodbaddress: mongodb connection string
+
 #support email
 supportemail: email
 supportphone: phone number
