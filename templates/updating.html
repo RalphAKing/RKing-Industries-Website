@@ -97,6 +97,27 @@
                 padding: 0 1rem;
             }
         }
+        .notice {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin: 2rem 0;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: #0f172a;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 160, 0, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -107,7 +128,10 @@
         <p>We are downloading all of the data we need to display your information.</p>
         <p>Our service is still in beta. Please email 2019rking@beauchamp.org.uk for bug fixes and new features.</p>
         <div class="spinner"></div>
+        <p class="notice">This may take a while just go to home for now and then come to /fasthive in 5m.</p>
+        <a href="/" class="home-button">Go to Home</a>
     </div>
+
 
     <script>
         function createParticles() {
