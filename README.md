@@ -3,7 +3,7 @@
 Welcome to the official repository of RKing Industries website! This project represents our online presence and showcases our services.
 
 ## About
-RKing Industries website serves as our digital platform to connect with customers and partners, displaying our products, services, and company information.
+RKing Industries website serves as our digital platform to connect with customers and partners, displaying our products, services, and company information as well as hosting some of our projects.
 
 ## Contributing
 We value community input! Here's how you can help make our website better:
