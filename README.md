@@ -5,6 +5,10 @@ Welcome to the official repository of RKing Industries website! This project rep
 ## About
 RKing Industries website serves as our digital platform to connect with customers and partners, displaying our products, services, and company information as well as hosting some of our projects.
 
+## Setup
+- Put your credentials downloaded form gmailapi into the static folder named credentials.json
+- Fill out the config.yaml file with the required configurations.
+
 ## Contributing
 We value community input! Here's how you can help make our website better:
 
