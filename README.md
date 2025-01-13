@@ -7,6 +7,7 @@ RKing Industries website serves as our digital platform to connect with customer
 
 ## Setup
 - Put your credentials downloaded form gmailapi into the static folder named credentials.json
+- - You can find this on the gmail api refrance website at https://developers.google.com/gmail/api/guides
 - Fill out the config.yaml file with the required configurations.
 
 ## Contributing
