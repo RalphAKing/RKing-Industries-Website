@@ -812,17 +812,17 @@ def contact():
         email = request.form.get('email')
         subject = request.form.get('subject')
         message = request.form.get('message')
-           
-        body = f"""
-        New contact form submission received:
-        
-        Name: {name}
-        Email: {email}
-        Subject: {subject}
-        Message: {message}
-        """
-        user = GMailDeleter()
-        user.send_email(body, config['supportemail'], 'Contact Request', 'plain')
+        if not(name==None or email==None or subject==None or message==None or name=="" or email=="" or subject=="" or message == ""):
+            body = f"""
+            New contact form submission received:
+            
+            Name: {name}
+            Email: {email}
+            Subject: {subject}
+            Message: {message}
+            """
+            user = GMailDeleter()
+            user.send_email(body, config['supportemail'], 'Contact Request', 'plain')
 
     return render_template('contact.html', email=config['supportemail'], phone=config['supportphone'])
 
