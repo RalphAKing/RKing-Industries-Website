@@ -885,7 +885,7 @@ def login():
             session.pop('userid', None)
     if request.method == 'POST':
         logged_accounts=accounts()
-        email = request.form['email']
+        email = (request.form['email']).lower()
         password = request.form['password']
 
         account = logged_accounts.find_one({'email':email})
