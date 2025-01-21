@@ -276,6 +276,9 @@
         </div>
         
         <div class="nav-links">
+            {% if link %}
+                <a href="/fasthive/">Fasthive</a>
+            {% endif %}
             {% if not loggedin %}
                 <a href="/login">Login</a>
                 <a href="/signup">Sign Up</a>

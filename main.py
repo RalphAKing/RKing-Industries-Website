@@ -775,7 +775,12 @@ def index():
         if account == None:
             session.pop('userid', None)
         else:
-            return render_template('index.html', loggedin=True)
+            try:
+                account['beehivelinked']
+                link=True
+            except:
+                link=False
+            return render_template('index.html', loggedin=True, link=link)
     return render_template('index.html')
 
 @app.route('/store')
@@ -799,13 +804,19 @@ def vapedetectorspage():
 
 @app.route('/fasthiveinfo')
 def fasthiveinfo():
+    link=False
     if 'userid' in session:
         logged_accounts=accounts()
         account = logged_accounts.find_one({'userid':session['userid']})
         if account == None:
             session.pop('userid', None)
+        try:
+            account['beehivelinked']
+            link=True
+        except:
+            pass
     
-    return render_template('info.html')
+    return render_template('info.html', link=link)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():

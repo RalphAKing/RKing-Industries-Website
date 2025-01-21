@@ -177,6 +177,41 @@
                 font-size: 28px;
             }
         }
+
+    .requirements-list {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 10px;
+    }
+
+    .requirements-list li {
+        color: #e74c3c;
+        font-size: 12px;
+        margin-bottom: 5px;
+        padding-left: 20px;
+        position: relative;
+    }
+
+    .requirements-list li::before {
+        content: '✕';
+        position: absolute;
+        left: 0;
+        color: #e74c3c;
+    }
+
+    .requirements-list li.valid {
+        color: #2ecc71;
+    }
+
+    .requirements-list li.valid::before {
+        content: '✓';
+        color: #2ecc71;
+    }
+
+    .invalid-input {
+        border-color: #e74c3c !important;
+        box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1) !important;
+    }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -214,7 +249,14 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required placeholder="Create a password">
-                <small>Must contain at least 8 characters, one uppercase, one lowercase, one number and one symbol</small>
+                <small>Password requirements:</small>
+                <ul id="password-requirements" class="requirements-list">
+                    <li id="length-check">At least 8 characters</li>
+                    <li id="digit-check">At least one number</li>
+                    <li id="uppercase-check">At least one uppercase letter</li>
+                    <li id="lowercase-check">At least one lowercase letter</li>
+                    <li id="symbol-check">At least one special character</li>
+                </ul>
             </div>
 
             <div class="form-group">
@@ -230,32 +272,50 @@
 </body>
 </html>
 
-<!-- Add this script section just before the closing </body> tag -->
 <script>
     const form = document.querySelector('form');
     const password = document.getElementById('password');
     const retypePassword = document.getElementById('retypepassword');
     const submitBtn = document.querySelector('.submit-btn');
 
+    function validatePassword(password) {
+        const conditions = {
+            length: password.length >= 8,
+            digit: /\d/.test(password),
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            symbol: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+        };
+
+        document.getElementById('length-check').classList.toggle('valid', conditions.length);
+        document.getElementById('digit-check').classList.toggle('valid', conditions.digit);
+        document.getElementById('uppercase-check').classList.toggle('valid', conditions.uppercase);
+        document.getElementById('lowercase-check').classList.toggle('valid', conditions.lowercase);
+        document.getElementById('symbol-check').classList.toggle('valid', conditions.symbol);
+
+        const allConditionsMet = Object.values(conditions).every(condition => condition);
+        password.classList.toggle('invalid-input', !allConditionsMet);
+
+        return allConditionsMet;
+    }
+
     function validatePasswords() {
-        if (password.value !== retypePassword.value) {
+        const passwordsMatch = password.value === retypePassword.value;
+        const passwordValid = validatePassword(password.value);
+
+        if (!passwordsMatch) {
             retypePassword.setCustomValidity('Passwords do not match');
-            submitBtn.disabled = true;
+            retypePassword.classList.add('invalid-input');
         } else {
             retypePassword.setCustomValidity('');
-            submitBtn.disabled = false;
+            retypePassword.classList.remove('invalid-input');
         }
+
+        submitBtn.disabled = !passwordsMatch || !passwordValid;
     }
 
     password.addEventListener('input', validatePasswords);
     retypePassword.addEventListener('input', validatePasswords);
 
-    // Add visual feedback for matching status
-    retypePassword.addEventListener('input', function() {
-        if (this.value !== password.value) {
-            this.style.borderColor = '#e74c3c';
-        } else {
-            this.style.borderColor = '#2ecc71';
-        }
-    });
+    validatePasswords();
 </script>

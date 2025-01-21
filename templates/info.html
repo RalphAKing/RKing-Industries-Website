@@ -135,8 +135,12 @@
             </p>
             <div class="info-section">
                 <div class="cta-buttons" style="display: flex; gap: 1rem;">
-                    <a href="/profile" class="cta-button primary-cta" style="flex: 1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center; background: var(--primary-color); color: white;">Link Account</a>
-                    <a href="/fasthive" class="cta-button secondary-cta" style="flex: 1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center; border: 2px solid var(--primary-color); color: var(--text-color);">Go to FastHive</a>
+                    {% if link %}
+                        <a href="/fasthive" class="cta-button secondary-cta" style="flex: 1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center; border: 2px solid var(--primary-color); color: var(--text-color);">Go to FastHive</a>
+                    {% endif %}
+                    {% if not link %}
+                        <a href="/profile" class="cta-button primary-cta" style="flex: 1; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center; background: var(--primary-color); color: white;">Link Account</a>
+                    {% endif %}        
                 </div>
             </div>
     
