@@ -280,7 +280,7 @@ def smartcard(token, id):
             for i in response2.json()['items']:
                 transactions.append({'total':i['total'],'description':i['description'],'date':i['date']})
         balance=(response.json()[0]['balance'])
-        printbalance=(response.json()[0]['printCreditBalance'])
+        printbalance=(response.json()[0]['printCreditBalance']['purses'][1]['balance'])
         return balance, printbalance,transactions
     else:
         return False
