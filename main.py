@@ -639,15 +639,11 @@ def fetchall(token,id,username,password):
         except:
             print('noticeboard failed')
             noticebord={}
-        print('done')
         databasedb=database()
-        print('test')
         find=databasedb.find_one({str(id): {'$exists': True}})
-        print(find)
         if find == None or find == '':
             try:  
-                print('db1')
-                print(databasedb.insert_one({
+                databasedb.insert_one({
                         str(id):{
                             'username':username,
                             'password':password,
@@ -667,8 +663,19 @@ def fetchall(token,id,username,password):
                             'transactions':transactions,
                             'noticeboard':noticebord
                             }
-                        }))
-                print('db2')
+                        })
+                message = """
+Dear User,
+
+Great news! Your Beehive account has finished linking
+
+Best regards,
+RKing Industries Team
+"""
+                logged_accounts=accounts()
+                account = logged_accounts.find_one({'bhid':id})
+                user = GMailDeleter()
+                user.send_email(message, account['email'], 'Beehive Linked', 'plain')
             except Exception as e:
                 print(e)
         else:
