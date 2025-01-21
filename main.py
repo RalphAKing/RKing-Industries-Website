@@ -150,10 +150,9 @@ Dear User,
 
 Thank you for registering with RKing Industries!
 
-To complete your account setup, please click the verification link below:
-{ymaldata['website']}/verify/{code}
+To complete your account setup, please visit the following link: 
+{ymaldata['website']}/verify
 
-or visit {ymaldata['website']}/verify
 and enter the code: {code}
 
 If you did not create this account, please ignore this email.
