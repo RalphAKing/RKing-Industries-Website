@@ -1465,6 +1465,13 @@ def fasthive():
             current_time = now.time()
 
             sorted_events = sorted(founddata[session['id']]['noticeboard'], key=lambda x: datetime.strptime(x['time'], '%Y-%m-%dT%H:%M:%S'), reverse=True)
+            assighments=founddata[session['id']]['assighments']
+            sorted_assignments = dict(sorted(
+                assighments.items(),
+                key=lambda x: datetime.strptime(x[1]['deadline'], '%Y-%m-%dT%H:%M:%S')
+            ))
+            for assignment in sorted_assignments.values():
+                assignment['deadline'] = assignment['deadline'].split('T')[0]
             def parse_time(time_str):
                 if len(time_str) == 5:
                     return datetime.strptime(time_str, '%H:%M').time()
@@ -1488,7 +1495,7 @@ def fasthive():
 
             
 
-            return render_template('newmain.html',lesson_details=next_lesson,transactions=founddata[session['id']]['transactions'],noticeboard=sorted_events,events=founddata[session['id']]['events'],links=founddata[session['id']]['links'],users=users,behave=behave,reward=reward,Attendance=founddata[session['id']]['attendance'],Absences=founddata[session['id']]['absences'],Lates=founddata[session['id']]['lates'],Behaviour=founddata[session['id']]['behaviourPoints'],Reward=founddata[session['id']]['rewardPoints'],name=founddata[session['id']]['name'],form=founddata[session['id']]['tutorGroup'],balance=founddata[session['id']]['balance'],print=founddata[session['id']]['printbalance'],data=founddata[session['id']]['assighments'],timetable=timetable)
+            return render_template('newmain.html',lesson_details=next_lesson,transactions=founddata[session['id']]['transactions'],noticeboard=sorted_events,events=founddata[session['id']]['events'],links=founddata[session['id']]['links'],users=users,behave=behave,reward=reward,Attendance=founddata[session['id']]['attendance'],Absences=founddata[session['id']]['absences'],Lates=founddata[session['id']]['lates'],Behaviour=founddata[session['id']]['behaviourPoints'],Reward=founddata[session['id']]['rewardPoints'],name=founddata[session['id']]['name'],form=founddata[session['id']]['tutorGroup'],balance=founddata[session['id']]['balance'],print=founddata[session['id']]['printbalance'],data=sorted_assignments,timetable=timetable)
     return redirect('/profile')
 
 
