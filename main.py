@@ -713,21 +713,34 @@ RKing Industries Team
 
 @app.route('/submit/<ass>')
 def submit(ass):
-    if 'token' in session and 'id' in session:
+    if 'userid' in session:
+        logged_accounts=accounts()
+        account = logged_accounts.find_one({'userid':session['userid']})
+        if account == None:
+            session.pop('userid', None)
+            return redirect('/login')
+        try:
+            link=account['beehivelinked']
+        except:
+            link=False
+        if link == False:
+            return render_template('notlincked.html')
+        id=account['bhid']
+        token=account['bhtoken']
         logins=database()
-        found=logins.find_one({session['id']: { '$exists' : True } })
+        found=logins.find_one({id: { '$exists' : True } })
         if found:
-            data=submit_assighment(session['token'],session['id'],ass)
+            data=submit_assighment(token,id,ass)
             print(data)
             if data == True:
                 result = logins.update_one(
-                    {session['id']: {'$exists': True}},
-                    {"$set": {f"{session['id']}.assighments.{ass}.completed": True}}
+                    {id: {'$exists': True}},
+                    {"$set": {f"{id}.assighments.{ass}.completed": True}}
                 )
                 print(result)
         
         return redirect('/fasthive/')
-    return redirect('/fasthive/login')
+    return redirect('/login')
 
 def rescan():
     logins=database()
@@ -909,13 +922,6 @@ def login():
         if account != None:
             if check_password_hash(account['password'], password):
                 session['userid'] = account['userid']
-
-                try:
-                    account['beehivelinked']
-                    session['token'] = account['bhtoken']
-                    session['id'] = account['bhid']
-                except:
-                    pass
                 
                 return redirect('/')
             else:
@@ -1433,8 +1439,6 @@ def profile():
                         password = request.form['beehive_password']       
                         response = fasthivelogin(username, password)   
                         if response != False:
-                            session['token'] = response[0]
-                            session['id'] = response[1]
                             session['username'] = username
                             session['password'] = password
                             account["beehivelinked"] = "True"
@@ -1457,9 +1461,21 @@ def eventss(ass):
 
 @app.route('/fasthive/')
 def fasthive():
-    if 'token' in session and 'id' in session:
+    if 'userid' in session:
+        logged_accounts=accounts()
+        account = logged_accounts.find_one({'userid':session['userid']})
+        if account == None:
+            session.pop('userid', None)
+            return redirect('/login')
+        try:
+            link=account['beehivelinked']
+        except:
+            link=False
+        if link == False:
+            return render_template('notlincked.html')
+        id=account['bhid']
         logins=database()
-        founddata=logins.find_one({session['id']:{ '$exists' : True }})
+        founddata=logins.find_one({id:{ '$exists' : True }})
         if founddata:
             if 'password' in session and 'username' in session:
                 session.pop('username',None)
@@ -1468,14 +1484,14 @@ def fasthive():
             behave=(leaderbo.find_one({'top_behaviour_points': {'$exists': True}}))
             reward=(leaderbo.find_one({'top_reward_points': {'$exists': True}}))
             users = logins.count_documents({})
-            timetable=founddata[session['id']]['timetable']
+            timetable=founddata[id]['timetable']
 
             now = datetime.now()
             current_day = now.strftime('%A')
             current_time = now.time()
 
-            sorted_events = sorted(founddata[session['id']]['noticeboard'], key=lambda x: datetime.strptime(x['time'], '%Y-%m-%dT%H:%M:%S'), reverse=True)
-            assighments=founddata[session['id']]['assighments']
+            sorted_events = sorted(founddata[id]['noticeboard'], key=lambda x: datetime.strptime(x['time'], '%Y-%m-%dT%H:%M:%S'), reverse=True)
+            assighments=founddata[id]['assighments']
             sorted_assignments = dict(sorted(
                 assighments.items(),
                 key=lambda x: datetime.strptime(x[1]['deadline'], '%Y-%m-%dT%H:%M:%S')
@@ -1505,44 +1521,58 @@ def fasthive():
 
             
 
-            return render_template('newmain.html',lesson_details=next_lesson,transactions=founddata[session['id']]['transactions'],noticeboard=sorted_events,events=founddata[session['id']]['events'],links=founddata[session['id']]['links'],users=users,behave=behave,reward=reward,Attendance=founddata[session['id']]['attendance'],Absences=founddata[session['id']]['absences'],Lates=founddata[session['id']]['lates'],Behaviour=founddata[session['id']]['behaviourPoints'],Reward=founddata[session['id']]['rewardPoints'],name=founddata[session['id']]['name'],form=founddata[session['id']]['tutorGroup'],balance=founddata[session['id']]['balance'],print=founddata[session['id']]['printbalance'],data=sorted_assignments,timetable=timetable)
+            return render_template('newmain.html',lesson_details=next_lesson,transactions=founddata[id]['transactions'],noticeboard=sorted_events,events=founddata[id]['events'],links=founddata[id]['links'],users=users,behave=behave,reward=reward,Attendance=founddata[id]['attendance'],Absences=founddata[id]['absences'],Lates=founddata[id]['lates'],Behaviour=founddata[id]['behaviourPoints'],Reward=founddata[id]['rewardPoints'],name=founddata[id]['name'],form=founddata[id]['tutorGroup'],balance=founddata[id]['balance'],print=founddata[id]['printbalance'],data=sorted_assignments,timetable=timetable)
     return redirect('/profile')
 
 
 @app.route('/updating')
 def updating():
-    if 'token' in session and 'id' in session:
-        task_statuses[session['id']] = False
-        return render_template('updating.html', task_id=session['id'])
+    if 'userid' in session:
+        logged_accounts=accounts()
+        account = logged_accounts.find_one({'userid':session['userid']})
+        if account == None:
+            session.pop('userid', None)
+            return redirect('/login')
+        try:
+            link=account['beehivelinked']
+        except:
+            link=False
+        if link == False:
+            return render_template('notlincked.html')
+        id=account['bhid']
+        task_statuses[id] = False
+        return render_template('updating.html', task_id=id)
     else:
         return redirect('/')
 
 @app.route('/start_task', methods=['POST'])
 def start_task():
-    if 'token' in session and 'id' in session:
+    if 'userid' in session:
+        logged_accounts=accounts()
+        account = logged_accounts.find_one({'userid':session['userid']})
+        if account == None:
+            session.pop('userid', None)
+            return redirect('/login')
+        try:
+            link=account['beehivelinked']
+        except:
+            link=False
+        if link == False:
+            return render_template('notlincked.html')
+        id=account['bhid']
+        token=account['bhtoken']
         if 'username' in session and 'password' in session:
-            threading.Thread(target=fetchall(session['token'],session['id'],session['username'],session['password'])).start()
+            threading.Thread(target=fetchall(token,id,session['username'],session['password'])).start()
             return jsonify({'status': 'started'})
         else:
-            threading.Thread(target=fetchall(session['token'],session['id'],None,None)).start()
+            threading.Thread(target=fetchall(token,id,None,None)).start()
             return jsonify({'status': 'started'})
  
 
 @app.route('/task_status/<task_id>')
 def task_status_route(task_id):
     status = task_statuses.get(task_id, False)
-    return jsonify({'complete': status})
-
-
-
-
-@app.route('/startreload', methods=['POST'])
-def startreload():
-    if 'token' in session and 'id' in session:
-        if session['id'] == '7ba6339d-e764-ef11-8154-005056a23846':
-            threading.Thread(target=rescan()).start()
-            return jsonify({'status': 'started'})
-        
+    return jsonify({'complete': status}) 
 
 @app.errorhandler(404)
 def not_found(e):
@@ -1551,11 +1581,6 @@ def not_found(e):
 @app.route('/logout')
 def logout():
     session.pop('userid', None)
-    try:
-        session.pop('token', None)
-        session.pop('id', None)
-    except:
-        pass
     return redirect('/') 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

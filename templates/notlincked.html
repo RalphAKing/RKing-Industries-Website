@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Beehive Account Not Linked | RKing Industries</title>
+    <link rel="icon" href="../static/logo.png" type="image/icon type">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --text-color: #f8fafc;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+        .error-code {
+            font-size: 150px;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float 6s ease-in-out infinite;
+        }
+        .error-message {
+            font-size: 2rem;
+            margin: 1rem 0;
+            font-weight: 300;
+        }
+        .error-description {
+            font-size: 1.1rem;
+            margin: 1rem 0 2rem 0;
+            opacity: 0.8;
+        }
+        .home-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        .profile-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .profile-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            background: #ffffff10;
+            border-radius: 50%;
+            animation: moveParticle 8s infinite linear;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes moveParticle {
+            0% { transform: translateY(100vh) translateX(-10px); }
+            100% { transform: translateY(-100px) translateX(10px); }
+        }
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 100px;
+            }
+            .error-message {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="container">
+        <h1 class="error-code">401</h1>
+        <h2 class="error-message">Account Not Linked</h2>
+        <p class="error-description">Your Beehive account has not yer been linked please link it in profile.</p>
+        <a href="/profile" class="profile-button">Profile</a>
+    </div>
+    <script>
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 8 + 4}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+        createParticles();
+    </script>
+</body>
+</html>
