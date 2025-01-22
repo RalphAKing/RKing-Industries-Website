@@ -1425,7 +1425,10 @@ def profile():
                 if request.form.get('action') == 'delete_account':
                     password = request.form['password']
                     if check_password_hash(account['password'], password):
+                        vpd=vapedetectors()
+                        vpd.delete_one({account['account']:{ '$exists' : True }})
                         logged_accounts.delete_one({'userid': session['userid']})
+
                         session.pop('userid', None)
                         return redirect('/')
                     return render_template('profile.html', error3='Invalid password')
