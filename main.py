@@ -1426,7 +1426,7 @@ def profile():
                     password = request.form['password']
                     if check_password_hash(account['password'], password):
                         vpd=vapedetectors()
-                        vpd.delete_one({account['account']:{ '$exists' : True }})
+                        vpd.delete_one({account['apikey']:{ '$exists' : True }})
                         logged_accounts.delete_one({'userid': session['userid']})
 
                         session.pop('userid', None)
