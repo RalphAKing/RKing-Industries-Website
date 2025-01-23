@@ -795,6 +795,14 @@ def index():
             return render_template('index.html', loggedin=True, link=link)
     return render_template('index.html')
 
+@app.route('/dartsgame')
+def dartsgame():
+    return render_template('dartsgame.html')
+
+@app.route('/game')
+def game():
+    return render_template('game.html')
+
 @app.route('/store')
 def store():
     if 'userid' in session:
