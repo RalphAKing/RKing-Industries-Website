@@ -1533,7 +1533,7 @@ def fasthive():
             
 
             return render_template('newmain.html',lesson_details=next_lesson,transactions=founddata[id]['transactions'],noticeboard=sorted_events,events=founddata[id]['events'],links=founddata[id]['links'],users=users,behave=behave,reward=reward,Attendance=founddata[id]['attendance'],Absences=founddata[id]['absences'],Lates=founddata[id]['lates'],Behaviour=founddata[id]['behaviourPoints'],Reward=founddata[id]['rewardPoints'],name=founddata[id]['name'],form=founddata[id]['tutorGroup'],balance=founddata[id]['balance'],print=founddata[id]['printbalance'],data=sorted_assignments,timetable=timetable)
-    return redirect('/profile')
+    return render_template('info.html')
 
 
 @app.route('/updating')
