@@ -11,7 +11,7 @@ function addPlayer() {
 }
 
 function startGame() {
-    const gamePoints = 501; 
+    const gamePoints = document.getElementById('score').value;
     const legs = document.getElementById('legs').value;
     const players = Array.from(document.getElementsByClassName('player-name'))
         .map(input => ({

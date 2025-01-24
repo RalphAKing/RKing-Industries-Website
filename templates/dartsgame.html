@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darts Tracker</title>
     <link rel="stylesheet" href="./static/styles.css">
     <style>
@@ -17,7 +19,7 @@
 
         .setup-container {
             background-color: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             max-width: 400px;
@@ -28,16 +30,20 @@
         .setup-container h1 {
             margin-bottom: 20px;
             color: #004080;
+            font-size: 1.5em;
         }
 
         #players-container {
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .player-name {
-            width: calc(100% - 100px);
+            width: 100%;
             padding: 10px;
-            margin-right: 10px;
+            margin-bottom: 10px;
             font-size: 1em;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -51,6 +57,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%;
         }
 
         #players-container button:hover {
@@ -89,6 +96,28 @@
         .setup-container button:hover {
             background-color: #003060;
         }
+
+        @media (max-width: 600px) {
+            .setup-container {
+                padding: 15px;
+            }
+
+            .setup-container h1 {
+                font-size: 1.3em;
+            }
+
+            .player-name {
+                font-size: 0.9em;
+            }
+
+            .game-settings label {
+                font-size: 1em;
+            }
+
+            .setup-container button {
+                font-size: 1em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -101,9 +130,11 @@
         <div class="game-settings">
             <label for="legs">Number of Legs:</label>
             <input type="number" id="legs" value="1" min="1">
+            <label for="score">Score:</label>
+            <input type="number" id="score" value="501" min="1">
         </div>
         <button onclick="startGame()">Start Game</button>
     </div>
-<script src="./static/js/setup.js"></script>
+    <script src="./static/js/setup.js"></script>
 </body>
 </html>

@@ -157,13 +157,28 @@ function nextPlayer() {
 }
 
 function handleLegWin() {
+    const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+    
+    currentPlayer.legsWon = (currentPlayer.legsWon || 0) + 1;
+
     if (gameState.currentLeg < gameState.legs) {
         gameState.currentLeg++;
         resetScores();
     } else {
-        endGame();
+        const legsWon = gameState.players.map(player => player.legsWon || 0);
+        const maxLegsWon = Math.max(...legsWon);
+        const winners = legsWon.filter(legs => legs === maxLegsWon);
+
+        if (winners.length > 1) {
+            alert(`Game Over! It's a draw! Both players won ${maxLegsWon} legs.`);
+        } else {
+            const winner = gameState.players[gameState.currentPlayerIndex];
+            alert(`Game Over! ${winner.name} wins!`);
+        }
+        window.location.href = '/dartsgame';
     }
 }
+
 
 function resetScores() {
     gameState.players.forEach(player => {
@@ -175,7 +190,7 @@ function resetScores() {
 function endGame() {
     const winner = gameState.players[gameState.currentPlayerIndex];
     alert(`Game Over! ${winner.name} wins!`);
-    window.location.href = '/';
+    window.location.href = '/dartsgame';
 }
 
 function saveAndUpdateGame() {
