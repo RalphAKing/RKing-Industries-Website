@@ -184,7 +184,17 @@
                 padding: 1rem;
                 flex-direction: column;
                 gap: 1rem;
-                background: rgba(0, 0, 0, 0.8); 
+                background: rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                margin-bottom: 0;
+            }
+
+            .container {
+                padding-top: 140px; /* Instead of margin-top */
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-bottom: 1rem;
             }
 
             .nav-links {
@@ -199,11 +209,6 @@
                 font-size: 0.9rem;
                 min-width: 80px;
                 text-align: center;
-            }
-
-            .container {
-                padding: 1rem;
-                margin-top: 120px; 
             }
 
             .title {
