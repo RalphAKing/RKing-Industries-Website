@@ -23,7 +23,7 @@ import threading
 from PIL import Image
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-
+from flask_sqlalchemy import SQLAlchemy
 
 # Load config.yaml
 with open('config.yaml') as f:
@@ -36,6 +36,14 @@ task_statuses = {}
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'your_secret_key'
 app.jinja_env.globals.update(zip=zip)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///whiteboard.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+whiteboarddb = SQLAlchemy(app)
+
+class Whiteboard(whiteboarddb.Model):
+    id = whiteboarddb.Column(whiteboarddb.Integer, primary_key=True)
+    data = whiteboarddb.Column(whiteboarddb.Text)
 
 # MongoDB connection
 def vapedetectors():
@@ -1593,5 +1601,31 @@ def not_found(e):
 def logout():
     session.pop('userid', None)
     return redirect('/') 
+
+@app.route('/whiteboard')
+def whiteboard():
+    return render_template('whiteboard.html')
+
+@app.route('/save', methods=['POST'])
+def save():
+    data = request.json.get('data')
+    board = Whiteboard.query.first()
+
+    if board:
+        board.data = data
+    else:
+        board = Whiteboard(data=data)
+        whiteboarddb.session.add(board)
+    whiteboarddb.session.commit()
+    return jsonify(success=True)
+
+@app.route('/load', methods=['GET'])
+def load():
+    board = Whiteboard.query.first()
+    if board:
+        return jsonify(success=True, data=board.data)
+    return jsonify(success=False)
 if __name__ == '__main__':
+    with app.app_context():
+        whiteboarddb.create_all()
     app.run(host='0.0.0.0')

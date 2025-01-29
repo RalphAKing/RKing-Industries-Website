@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Whiteboard</title>
+    <style>
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #whiteboard {
+            position: absolute;
+            cursor: crosshair;
+        }
+        .tools {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .color-dot.active {
+            border-color: #000;
+        }
+        .tool-icon {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        #search-input {
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .home-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="tools">
+        <div class="color-dot active" style="background: black" data-color="black"></div>
+        <div class="color-dot" style="background: red" data-color="red"></div>
+        <div class="color-dot" style="background: green" data-color="green"></div>
+        <div class="color-dot" style="background: blue" data-color="blue"></div>
+        <div class="tool-icon" id="eraser">🧹</div>
+        <div class="tool-icon" id="save-btn">💾</div>
+        <input type="text" id="search-input" placeholder="🔍 Search labels...">
+        <a href="/" class="home-button">Return Home</a>
+    </div>
+    <div id="canvas-container">
+        <canvas id="whiteboard"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('whiteboard');
+        const ctx = canvas.getContext('2d');
+        let elements = [];
+        let currentState = {
+            isDrawing: false,
+            currentColor: 'black',
+            currentTool: 'pen',
+            currentElement: null,
+            offsetX: 0,
+            offsetY: 0,
+            isPanning: false,
+            startPanX: 0,
+            startPanY: 0
+        };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('load', () => {
+            fetch('/load')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        elements = JSON.parse(data.data);
+                        redrawCanvas();
+                    }
+                });
+        });
+
+        document.querySelectorAll('.color-dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                document.querySelectorAll('.color-dot').forEach(d => 
+                    d.classList.remove('active'));
+                dot.classList.add('active');
+                currentState.currentColor = dot.dataset.color;
+                currentState.currentTool = 'pen';
+            });
+        });
+
+        document.getElementById('eraser').addEventListener('click', () => {
+            currentState.currentTool = 'eraser';
+        });
+
+
+        document.getElementById('save-btn').addEventListener('click', () => {
+            fetch('/save', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({data: JSON.stringify(elements)})
+            });
+        });
+
+        function toCanvasX(clientX) {
+            return clientX - canvas.getBoundingClientRect().left + currentState.offsetX;
+        }
+
+        function toCanvasY(clientY) {
+            return clientY - canvas.getBoundingClientRect().top + currentState.offsetY;
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        function startDrawing(e) {
+            if (currentState.currentTool === 'pen' || currentState.currentTool === 'eraser') {
+                currentState.isDrawing = true;
+                currentState.currentElement = {
+                    type: 'path',
+                    points: [{
+                        x: toCanvasX(e.clientX),
+                        y: toCanvasY(e.clientY)
+                    }],
+                    color: currentState.currentTool === 'eraser' ? 'white' : currentState.currentColor,
+                    width: 5
+                };
+                elements.push(currentState.currentElement);
+            }
+        }
+
+        function draw(e) {
+            if (!currentState.isDrawing) return;
+            
+            if (currentState.currentTool === 'pen' || currentState.currentTool === 'eraser') {
+                currentState.currentElement.points.push({
+                    x: toCanvasX(e.clientX),
+                    y: toCanvasY(e.clientY)
+                });
+                redrawCanvas();
+            }
+        }
+
+        function stopDrawing() {
+            currentState.isDrawing = false;
+            currentState.currentElement = null;
+        }
+
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (e.button === 1 || (e.button === 0 && e.ctrlKey)) {
+                currentState.isPanning = true;
+                currentState.startPanX = e.clientX - currentState.offsetX;
+                currentState.startPanY = e.clientY - currentState.offsetY;
+                canvas.style.cursor = 'grabbing';
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (currentState.isPanning) {
+                currentState.offsetX = e.clientX - currentState.startPanX;
+                currentState.offsetY = e.clientY - currentState.startPanY;
+                redrawCanvas();
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            currentState.isPanning = false;
+            canvas.style.cursor = 'crosshair';
+        });
+
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            currentState.offsetX -= e.deltaX;
+            currentState.offsetY -= e.deltaY;
+            redrawCanvas();
+        });
+
+
+        canvas.addEventListener('dblclick', (e) => {
+            const text = prompt('Enter text:');
+            if (text) {
+                const x = toCanvasX(e.clientX);
+                const y = toCanvasY(e.clientY);
+                elements.push({
+                    type: 'text',
+                    text,
+                    x,
+                    y,
+                    color: currentState.currentColor
+                });
+                redrawCanvas();
+            }
+        });
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const searchText = e.target.value.toLowerCase();
+            const found = elements.find(el => 
+                el.type === 'text' && el.text.toLowerCase().includes(searchText)
+            );
+            if (found) {
+                currentState.offsetX = found.x - canvas.width/2;
+                currentState.offsetY = found.y - canvas.height/2;
+                redrawCanvas();
+            }
+        });
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(-currentState.offsetX, -currentState.offsetY);
+            
+            elements.forEach(element => {
+                if (element.type === 'path') {
+                    ctx.beginPath();
+                    ctx.moveTo(element.points[0].x, element.points[0].y);
+                    element.points.forEach(point => {
+                        ctx.lineTo(point.x, point.y);
+                    });
+                    ctx.strokeStyle = element.color;
+                    ctx.lineWidth = element.width;
+                    ctx.stroke();
+                } else if (element.type === 'text') {
+                    ctx.fillStyle = element.color;
+                    ctx.font = '20px Arial';
+                    ctx.fillText(element.text, element.x, element.y);
+                }
+            });
+            
+            ctx.restore();
+        }
+    </script>
+</body>
+</html>
