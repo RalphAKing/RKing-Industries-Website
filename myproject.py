@@ -34,7 +34,7 @@ task_statuses = {}
 # Flask app setup
 
 app = Flask(__name__, static_folder='static')
-app.secret_key = 'your_secret_key'
+app.secret_key = 'gfgergw4gw4gwegege4t4t43t4323432rfregukiloikuj'
 app.jinja_env.globals.update(zip=zip)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///whiteboard.db'
@@ -76,11 +76,6 @@ def leaderboarddb():
     leaderboarddata=db['leaderboard']
     return leaderboarddata
 
-def forums():
-    cluster = MongoClient(config['mongodbaddress'], connect=False)
-    db = cluster["RKingIndustries"]
-    forumsdb = db["forums"]
-    return forumsdb
 
 #email  
 
@@ -1631,6 +1626,7 @@ def load():
         return jsonify(success=True, data=board.data)
     return jsonify(success=False)
 
+
 @app.route('/privacy')
 def privacy():
     return render_template('privacy.html')
@@ -1639,63 +1635,7 @@ def privacy():
 def tos():
     return render_template('tos.html')
 
-@app.route('/forums')
-def forums_page():
-    forumsdb = forums()
-    questions = forumsdb.find().sort('timestamp', -1)
-    if 'userid' in session:
-        logged_accounts = accounts()
-        account = logged_accounts.find_one({'userid': session['userid']})
-        return render_template('forums.html', questions=questions, user=account)
-    return render_template('forums.html', questions=questions)
-
-@app.route('/forums/ask', methods=['POST'])
-def ask_question():
-    if 'userid' not in session:
-        return redirect('/login')
-    
-    title = request.form.get('title')
-    content = request.form.get('content')
-    logged_accounts = accounts()
-    account = logged_accounts.find_one({'userid': session['userid']})
-    
-    question = {
-        'title': title,
-        'content': content,
-        'author': account['username'],
-        'timestamp': datetime.now(),
-        'answers': [],
-        'question_id': str(uuid.uuid4())
-    }
-    
-    forumsdb = forums()
-    forumsdb.insert_one(question)
-    return redirect('/forums')
-
-@app.route('/forums/answer/<question_id>', methods=['POST'])
-def post_answer(question_id):
-    if 'userid' not in session:
-        return redirect('/login')
-    
-    answer_content = request.form.get('answer')
-    logged_accounts = accounts()
-    account = logged_accounts.find_one({'userid': session['userid']})
-    
-    answer = {
-        'content': answer_content,
-        'author': account['username'],
-        'timestamp': datetime.now()
-    }
-    
-    forumsdb = forums()
-    forumsdb.update_one(
-        {'question_id': question_id},
-        {'$push': {'answers': answer}}
-    )
-    return redirect('/forums')
-
-
+with app.app_context():
+    whiteboarddb.create_all()
 if __name__ == '__main__':
-    with app.app_context():
-        whiteboarddb.create_all()
     app.run(host='0.0.0.0')

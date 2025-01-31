@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="forums-container">
+    
+    {% if user %}
+    <div class="ask-question">
+        <h2>Ask a Question</h2>
+        <form action="/forums/ask" method="POST">
+            <input type="text" name="title" placeholder="What's your question?" required>
+            <textarea name="content" placeholder="Provide more details about your question..." required></textarea>
+            <button type="submit">Post Question</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="search-container">
+        <input type="text" id="forumSearch" placeholder="Search questions..." class="search-input">
+    </div>
+
+    <div class="questions-list">
+        {% for question in questions %}
+        <div class="question-card">
+            <h3>{{ question.title }}</h3>
+            <div class="content">{{ question.content }}</div>
+            <div class="question-meta">
+                Asked by <strong>{{ question.author }}</strong> on {{ question.timestamp.strftime('%B %d, %Y at %H:%M') }}
+            </div>
+            
+            <div class="answers">
+                <h4>{{ question.answers|length }} Answer{% if question.answers|length != 1 %}s{% endif %}</h4>
+                {% for answer in question.answers %}
+                <div class="answer">
+                    <p>{{ answer.content }}</p>
+                    <small>Answered by <strong>{{ answer.author }}</strong> on {{ answer.timestamp.strftime('%B %d, %Y at %H:%M') }}</small>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if user %}
+            <div class="answer-form">
+                <form action="/forums/answer/{{ question.question_id }}" method="POST">
+                    <textarea name="answer" placeholder="Share your answer..." required></textarea>
+                    <button type="submit">Post Answer</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

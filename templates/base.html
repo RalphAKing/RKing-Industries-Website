@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKing Industries</title>
+    <link rel="icon" href="../static/logo.png" type="image/icon type">
+<style>
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --background-color: #1e293b;
+    --text-color: #f8fafc;
+    --nav-height: 70px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    height: var(--nav-height);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: var(--primary-color);
+}
+
+.login, .signup {
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+}
+
+.login {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.signup {
+    background: var(--primary-color);
+    color: white;
+}
+
+.signup:hover {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.main-content {
+    margin-top: var(--nav-height);
+    flex: 1;
+    padding: 2rem;
+}
+
+.footer {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 3rem 2rem 1rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+}
+
+.footer-section h3 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.footer-section a {
+    display: block;
+    color: #f8fafc;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: var(--primary-color);
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .login, .signup {
+        padding: 0.4rem 1rem;
+    }
+}
+
+
+
+.forums-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 20px;
+}
+
+.ask-question {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    color: var(--text-color);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.ask-question form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ask-question input[type="text"] {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    outline: none;
+    border-color: var(--primary-color);
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.ask-question textarea {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    border-color: var(--primary-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    min-height: 120px;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.ask-question button {
+    background: #2563eb;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.ask-question button:hover {
+    background: #1d4ed8;
+}
+
+.question-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.question-card h3 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.question-card .content {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.question-meta {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.answers {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.answer {
+    background: #f9fafb;background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.answer p {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.answer small {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.answer-form {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.answer-form textarea {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    outline: none;
+    border-color: var(--primary-color);
+    border-radius: 8px;
+    min-height: 100px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.answer-form button {
+    background: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.answer-form button:hover {
+    background: #1d4ed8;
+}
+
+.search-container {
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.search-button {
+    background: #2563eb;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.search-button:hover {
+    background: #1d4ed8;
+}
+
+</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="../static/logo.png" alt="RKing Industries">
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-item">Home</a>
+                {% if user %}
+                    <div class="user-menu">
+                        <a href="/profile" class="nav-item">Profile</a>
+                        <a href="/logout" class="nav-item logout">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="/login" class="nav-item login">Login</a>
+                    <a href="/signup" class="nav-item signup">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="/privacy" target="_blank">Privacy Policy</a>
+                <a href="/tos" target="_blank">Terms of Service</a>
+                <a href="/contact" target="_blank">Contact Us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/rking.industries" class="social-icon" target="_blank">Facebook</a>
+                    <a href="https://twitter.com/RKingIndustrie" class="social-icon" target="_blank">Twitter</a>
+                    <a href="https://www.instagram.com/rking_industries/" class="social-icon" target="_blank">Instagram</a>
+                    <a href="https://github.com/RalphAKing" class="social-icon" target="_blank">GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 RKing Industries. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+document.getElementById('forumSearch').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const questions = document.querySelectorAll('.question-card');
+    
+    questions.forEach(question => {
+        const title = question.querySelector('h3').textContent.toLowerCase();
+        const content = question.querySelector('.content').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || content.includes(searchTerm)) {
+            question.style.display = 'block';
+        } else {
+            question.style.display = 'none';
+        }
+    });
+});
+</script>
+
+</body>
+</html>
