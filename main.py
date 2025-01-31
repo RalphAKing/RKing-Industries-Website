@@ -1625,6 +1625,15 @@ def load():
     if board:
         return jsonify(success=True, data=board.data)
     return jsonify(success=False)
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+@app.route('/tos')
+def tos():
+    return render_template('tos.html')
+
 if __name__ == '__main__':
     with app.app_context():
         whiteboarddb.create_all()
