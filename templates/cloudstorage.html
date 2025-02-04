@@ -236,6 +236,11 @@
                                 <i class="material-icons">download</i>
                                 Download
                             </a>
+
+                            <a href="#" class="btn btn-link" onclick="copyShareLink('{{ file.id }}')">
+                                <i class="material-icons">content_copy</i>
+                                Copy Link
+                            </a>
                          
                             {% endif %}
                             <a href="/cloudstorage/delete/{{ file.id }}" onclick="return confirm('Are you sure you want to delete this file?')" class="btn btn-delete">
@@ -258,6 +263,14 @@
     <div id="toast" class="toast"></div>
 
     <script>
+        function copyShareLink(fileId) {
+            const shareLink = `${window.location.origin}/cloudstorage/share/${fileId}`;
+            navigator.clipboard.writeText(shareLink).then(() => {
+                showToast('Link copied to clipboard!');
+            }).catch(err => {
+                showToast('Failed to copy link');
+            });
+        }
         const searchInput = document.getElementById('searchInput');
         const fileItems = document.querySelectorAll('.file-item');
 
