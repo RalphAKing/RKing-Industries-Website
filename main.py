@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, send_from_directory
 import yaml
 from yaml.loader import SafeLoader
 from pymongo import *
@@ -24,6 +24,7 @@ from PIL import Image
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 # Load config.yaml
 with open('config.yaml') as f:
@@ -1018,6 +1019,7 @@ def verify(confermationcode):
             'emails': {'0':check['email']}
         }
         vapedetectorsdb.insert_one(vapedetectorsinsert)
+        os.makedirs(f"files/{check['username']}")
 
         user = GMailDeleter()
         message = """
@@ -1694,6 +1696,135 @@ def post_answer(question_id):
     )
     return redirect('/forums')
 
+
+@app.route('/cloudstorage')
+def cloudstorage():
+    if 'userid' in session:
+        logged_accounts = accounts()
+        account = logged_accounts.find_one({'userid': session['userid']})
+        if account == None:
+            session.pop('userid', None)
+            return redirect('/login')
+            
+        try:
+            with open('files/headerfile.json', 'r') as f:
+                file_data = json.load(f)
+        except:
+            file_data = {}
+            
+        username = account['username']
+        user_files = []
+        
+        for file_id, file_info in file_data.items():
+            if file_info['owner'] == username:
+                user_files.append({
+                    'id': file_id,
+                    'name': file_info['name'],
+                    'shared': file_info['shared']
+                })
+                
+        return render_template('cloudstorage.html', files=user_files)
+        
+    return redirect('/login')
+
+
+@app.route('/cloudstorage/upload', methods=['POST'])
+def upload_file():
+    if 'userid' not in session:
+        return redirect('/login')
+        
+    if 'file' not in request.files:
+        return redirect('/cloudstorage')
+        
+    file = request.files['file']
+    if file.filename == '':
+        return redirect('/cloudstorage')
+        
+    logged_accounts = accounts()
+    account = logged_accounts.find_one({'userid': session['userid']})
+    username = account['username']
+    
+    file_id = str(uuid.uuid4())
+    
+    try:
+        with open('files/headerfile.json', 'r') as f:
+            file_data = json.load(f)
+    except:
+        file_data = {}
+        
+    file_data[file_id] = {
+        'name': file.filename,
+        'owner': username,
+        'shared': False
+    }
+    
+    with open('files/headerfile.json', 'w') as f:
+        json.dump(file_data, f)
+        
+    file.save(f'files/{username}/{file.filename}')
+    return redirect('/cloudstorage')
+    
+@app.route('/cloudstorage/share/<id>')
+def share_file(id):
+    try:
+        with open('files/headerfile.json', 'r') as f:
+            file_data = json.load(f)
+    except:
+        return "File not found", 404
+        
+    if id not in file_data or not file_data[id]['shared']:
+        return "File not shared", 403
+        
+    username = file_data[id]['owner']
+    filename = file_data[id]['name']
+    
+    return send_from_directory(f'files/{username}', filename, as_attachment=True)
+
+
+@app.route('/cloudstorage/changesharemode/<id>')
+def change_share_mode(id):
+    if 'userid' not in session:
+        return redirect('/login')
+        
+    try:
+        with open('files/headerfile.json', 'r') as f:
+            file_data = json.load(f)
+    except:
+        return redirect('/cloudstorage')
+        
+    if id in file_data:
+        logged_accounts = accounts()
+        account = logged_accounts.find_one({'userid': session['userid']})
+        if file_data[id]['owner'] == account['username']:
+            file_data[id]['shared'] = not file_data[id]['shared']
+            
+            with open('files/headerfile.json', 'w') as f:
+                json.dump(file_data, f)
+                
+    return redirect('/cloudstorage')
+
+
+@app.route('/cloudstorage/delete/<id>')
+def delete_file(id):
+    if 'userid' not in session:
+        return redirect('/login')
+        
+    try:
+        with open('files/headerfile.json', 'r') as f:
+            file_data = json.load(f)
+    except:
+        return redirect('/cloudstorage')
+        
+    if id in file_data:
+        logged_accounts = accounts()
+        account = logged_accounts.find_one({'userid': session['userid']})
+        if file_data[id]['owner'] == account['username']:
+            os.remove(f"files/{account['username']}/{file_data[id]['name']}")
+            del file_data[id]
+            with open('files/headerfile.json', 'w') as f:
+                json.dump(file_data, f)
+                
+    return redirect('/cloudstorage')
 
 if __name__ == '__main__':
     with app.app_context():

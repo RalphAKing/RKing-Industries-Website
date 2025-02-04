@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud Storage</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .upload-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .upload-form {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .upload-form input[type="file"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .upload-form button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .upload-form button:hover {
+            background: #45a049;
+        }
+
+        .files-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .file-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .file-item:hover {
+            transform: translateX(5px);
+        }
+
+        .file-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-name i {
+            color: #666;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .btn-share {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-unshare {
+            background: #FFC107;
+            color: #333;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-link {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            display: none;
+            animation: slideIn 0.3s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="upload-section">
+            <h2 class="section-title">Upload File</h2>
+            <form class="upload-form" action="/cloudstorage/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+
+        <div class="files-section">
+            <h2 class="section-title">Your Files</h2>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search files...">
+            </div>
+            <div class="file-list">
+                {% if files %}
+                    {% for file in files %}
+                    <div class="file-item" data-filename="{{ file.name.lower() }}">
+                        <div class="file-name">
+                            <i class="material-icons">description</i>
+                            <span>{{ file.name }}</span>
+                        </div>
+                        <div class="actions">
+                            <a href="/cloudstorage/changesharemode/{{ file.id }}" class="btn {% if file.shared %}btn-unshare{% else %}btn-share{% endif %}">
+                                <i class="material-icons">{% if file.shared %}lock_open{% else %}lock{% endif %}</i>
+                                {{ 'Unshare' if file.shared else 'Share' }}
+                            </a>
+                            {% if file.shared %}
+                            <a href="/cloudstorage/share/{{ file.id }}" target="_blank" class="btn btn-link">
+                                <i class="material-icons">download</i>
+                                Download
+                            </a>
+                         
+                            {% endif %}
+                            <a href="/cloudstorage/delete/{{ file.id }}" onclick="return confirm('Are you sure you want to delete this file?')" class="btn btn-delete">
+                                <i class="material-icons">delete</i>
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="material-icons" style="font-size: 48px; margin-bottom: 10px;">cloud_upload</i>
+                        <p>No files uploaded yet. Start by uploading your first file!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const fileItems = document.querySelectorAll('.file-item');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            fileItems.forEach(item => {
+                const filename = item.dataset.filename;
+                if (filename.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
