@@ -179,9 +179,31 @@
                 opacity: 1;
             }
         }
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #2196F3;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .home-button:hover {
+            background: #1976D2;
+        }
     </style>
 </head>
 <body>
+    <a href="/" class="home-button">
+        <i class="material-icons">home</i>
+        Home
+    </a>
     <div class="container">
         <div class="upload-section">
             <h2 class="section-title">Upload File</h2>
