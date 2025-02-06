@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - Messaging Application</title>
+    <style>
+        :root {
+            --dark-bg: #1a1a1a;
+            --darker-bg: #121212;
+            --card-bg: #2d2d2d;
+            --accent: #4CAF50;
+            --text: #ffffff;
+            --border: #404040;
+            --hover-bg: #363636;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        header {
+            background-color: var(--darker-bg);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .boards-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .dropdown-btn:hover {
+            background: var(--hover-bg);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--card-bg);
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .dropdown-item {
+            padding: 0.75rem;
+            color: var(--text);
+            border-radius: 4px;
+            transition: background 0.2s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background: var(--hover-bg);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem;
+            color: var(--text);
+            border-radius: 4px;
+            transition: background 0.2s;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .dropdown-item:hover {
+            background: var(--hover-bg);
+        }
+
+
+        .header-buttons {
+            display: flex;
+            gap: 0.5rem; 
+            justify-content: center;
+            padding-right: 3.5rem;
+        }
+
+
+        .header-button {
+            background-color: #808080;
+            color: var(--text);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .header-button:hover {
+            opacity: 0.9;
+        }
+
+
+        .container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 20px;
+        }
+
+        .post-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: var(--card-bg);
+            margin: 15% auto;
+            padding: 2rem;
+            width: 50%;
+            border-radius: 8px;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        input[type="text"], textarea, select {
+            background: var(--darker-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            border-radius: 4px;
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+
+        button[type="submit"] {
+            background-color: var(--accent);
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .vote-btn, .action-btn {
+            background: var(--darker-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .vote-btn:hover, .action-btn:hover {
+            background: var(--hover-bg);
+        }
+
+        .board-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+        }
+
+        .date {
+            margin-left: auto;
+            color: #999;
+            font-size: 12px;
+            padding-right: 10px;
+        }
+
+        .replies-container {
+            margin-left: 2rem;
+            border-left: 2px solid var(--border);
+            padding-left: 1rem;
+        }
+
+        .post-content {
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="user-info">
+            <span>{{ username }}</span>
+            <div class="boards-dropdown">
+                <button class="dropdown-btn">Your Boards ▼</button>
+                <div class="dropdown-content">
+                    {% if boards %}
+                        {% for board in boards %}
+                            <a href="board/{{ board.name }}" class="dropdown-item">
+                                {{ board.name }}
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="dropdown-item">No boards available</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="boards-dropdown">
+                <button class="dropdown-btn">Find Boards ▼</button>
+                <div class="dropdown-content">
+                    {% if not_user_boards %}
+                        {% for board in not_user_boards %}
+                            <a href="board/{{ board.name }}" class="dropdown-item">
+                                {{ board.name }}
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="dropdown-item">No boards available</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="header-buttons">
+            <span><button class="header-button" onclick="openModal('postModal')">Create New Post</button></span>
+            <span></span><button class="header-button" onclick="openModal('boardModal')">Create New Board</button></span>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Post Creation Modal -->
+        <div id="postModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('postModal')">&times;</span>
+                <h2>Create New Post</h2>
+                <form action="/createmessage" method="POST">
+                    <div class="form-group">
+                        <label>Select Board:</label>
+                        <select name="boardname" required>
+                            {% for board in boards %}
+                                <option value="{{ board.name }}">{{ board.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message Content:</label>
+                        <textarea name="content" rows="6" required></textarea>
+                    </div>
+                    <button type="submit">Post Message</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Board Creation Modal -->
+        <div id="boardModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('boardModal')">&times;</span>
+                <h2>Create New Board</h2>
+                <form action="/createboard" method="POST">
+                    <div class="form-group">
+                        <label>Board Name:</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea name="description" rows="4" required></textarea>
+                    </div>
+                    <button type="submit">Create Board</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="top-posts">
+            <h2>Top Posts of the Day</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="post-card" data-messageid="{{ message.messageid }}" data-chain="{{ message.messageid }}">
+                        <div class="post-header">
+                            <div class="author-info">
+                                <span class="author">{{ message.author_name }}</span>
+                                <span class="dot">•</span>
+                                <span class="author-score" data-userid="{{ message.owner }}">{{ message.author_score }}</span>
+                                <span class="dot">•</span>
+                                <a href="/board/{{ message.board }}" class="board-link">{{ message.board }}</a>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            {{ message.content|safe }}
+                        </div>
+                        <div class="post-footer">
+                            <button class="vote-btn upvote">⬆ {{ message.upvotes }}</button>
+                            <button class="vote-btn downvote">⬇ {{ message.downvotes }}</button>
+                            <button class="action-btn reply">💬 Reply</button>
+                            <button class="action-btn share">↗ Share</button>
+                            <span class="date">{{ message.date.strftime('%Y-%m-%d %H:%M') }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-posts">No posts yet today.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.boards-dropdown').forEach(dropdown => {
+                const btn = dropdown.querySelector('.dropdown-btn');
+                const content = dropdown.querySelector('.dropdown-content');
+
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = content.style.display === 'block';
+                    document.querySelectorAll('.dropdown-content').forEach(d => {
+                        d.style.display = 'none';
+                    });
+                    content.style.display = isOpen ? 'none' : 'block';
+                });
+                document.addEventListener('click', (e) => {
+                    if (!dropdown.contains(e.target)) {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.vote-btn').forEach(button => {
+            button.addEventListener('click', async function() {
+                const messageCard = this.closest('.post-card');
+                const messageId = messageCard.dataset.messageid;
+                const isUpvote = this.classList.contains('upvote');
+
+                try {
+                    const response = await fetch('/vote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            messageId: messageId,
+                            isUpvote: isUpvote
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        const upvoteBtn = messageCard.querySelector('.upvote');
+                        const downvoteBtn = messageCard.querySelector('.downvote');
+                        upvoteBtn.textContent = `⬆ ${data.upvotes}`;
+                        downvoteBtn.textContent = `⬇ ${data.downvotes}`;
+                    }
+                } catch (error) {
+                    console.error('Error processing vote:', error);
+                }
+            });
+        });
+
+        document.querySelectorAll('.reply').forEach(button => {
+            button.addEventListener('click', function() {
+                const messageCard = this.closest('.post-card');
+                const replyForm = messageCard.querySelector('.reply-form-container');
+                if (replyForm) {
+                    replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+        });
+
+        document.querySelectorAll('.share').forEach(button => {
+            button.addEventListener('click', async function() {
+                const messageCard = this.closest('.post-card');
+                const messageId = messageCard.dataset.messageid;
+                const shareUrl = `${window.location.origin}/post/${messageId}`;
+                
+                try {
+                    await navigator.clipboard.writeText(shareUrl);
+                    this.textContent = "✓ Copied!";
+                    setTimeout(() => {
+                        this.textContent = "↗ Share";
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy URL:', err);
+                }
+            });
+        });
+
+        function attachVoteHandlers(element) {
+            element.querySelectorAll('.vote-btn').forEach(button => {
+                button.addEventListener('click', async function() {
+                    const direction = this.classList.contains('upvote') ? 'up' : 'down';
+                    const messageCard = this.closest('.post-card');
+                    const messageChain = messageCard.dataset.chain ? messageCard.dataset.chain.split(',') : [messageCard.dataset.messageid];
+                    
+                    const upvoteCount = this.classList.contains('upvote') ? this : messageCard.querySelector('.upvote');
+                    const downvoteCount = this.classList.contains('downvote') ? this : messageCard.querySelector('.downvote');
+                    const authorScore = messageCard.querySelector('.author-score');
+                    
+                    const response = await fetch('/updown', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            direction: direction,
+                            messageChain: messageChain
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        upvoteCount.innerHTML = `⬆ ${data.upvotes}`;
+                        downvoteCount.innerHTML = `⬇ ${data.downvotes}`;
+                        authorScore.textContent = data.author_score;
+                        
+                        const authorId = authorScore.dataset.userid;
+                        document.querySelectorAll(`.author-score[data-userid="${authorId}"]`).forEach(score => {
+                            score.textContent = data.author_score;
+                        });
+                        
+                        if (direction === 'up') {
+                            if (data.voted) {
+                                upvoteCount.classList.add('active');
+                                downvoteCount.classList.remove('active');
+                            } else {
+                                upvoteCount.classList.remove('active');
+                            }
+                        } else {
+                            if (data.voted) {
+                                downvoteCount.classList.add('active');
+                                upvoteCount.classList.remove('active');
+                            } else {
+                                downvoteCount.classList.remove('active');
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        async function submitReply(form, parentId, parentChain) {
+            const content = form.content.value;
+            if (!content.trim()) return;
+            
+            try {
+                const response = await fetch('/reply', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        parent_id: parentId,
+                        content: content,
+                        parent_chain: parentChain
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    const repliesList = form.closest('.replies-container').querySelector('.replies-list');
+                    const replyHTML = createReplyCard(data.reply, parentChain);
+                    repliesList.insertAdjacentHTML('afterbegin', replyHTML);
+                    
+                    const newReply = repliesList.firstElementChild;
+                    attachVoteHandlers(newReply);
+                    attachReplyHandler(newReply.querySelector('.reply'), [...parentChain, data.reply.messageid]);
+                    
+                    form.reset();
+                    form.closest('.reply-form-container').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error submitting reply:', error);
+            }
+        }
+
+        async function loadReplies(messageid, container, parentChain) {
+            const chainParam = parentChain.join(',');
+            const response = await fetch(`/replies/${messageid}?chain=${chainParam}`);
+            const replies = await response.json();
+            
+            container.innerHTML = replies.map(reply => createReplyCard(reply, parentChain)).join('');
+            attachVoteHandlers(container);
+            
+            container.querySelectorAll('.reply').forEach(button => {
+                attachReplyHandler(button, parentChain);
+            });
+        }
+
+        function attachReplyHandler(button, parentChain) {
+            button.addEventListener('click', function() {
+                const messageCard = this.closest('.post-card');
+                const messageid = messageCard.dataset.messageid;
+                const currentChain = [...parentChain, messageid];
+
+                let repliesContainer = messageCard.nextElementSibling;
+                if (repliesContainer && repliesContainer.classList.contains('replies-container')) {
+                    repliesContainer.remove();
+                } else {
+                    const repliesHTML = `
+                        <div class="replies-container">
+                            <div class="replies-list"></div>
+                            <button class="new-reply-button">Write a Reply</button>
+                            <div class="reply-form-container" style="display: none;">
+                                <form class="reply-form">
+                                    <textarea name="content" class="reply-input" required></textarea>
+                                    <button type="button" class="submit-reply" onclick="submitReply(this.form, '${messageid}', [${currentChain.map(id => `'${id}'`)}])">Post Reply</button>
+                                </form>
+                            </div>
+                        </div>
+                    `;
+                    messageCard.insertAdjacentHTML('afterend', repliesHTML);
+                    
+                    const repliesList = messageCard.nextElementSibling.querySelector('.replies-list');
+                    loadReplies(messageid, repliesList, currentChain);
+
+                    const newReplyButton = messageCard.nextElementSibling.querySelector('.new-reply-button');
+                    newReplyButton.addEventListener('click', function() {
+                        const formContainer = this.nextElementSibling;
+                        formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+                    });
+                }
+            });
+        }
+
+        function createReplyCard(reply, parentChain) {
+            const currentChain = [...parentChain, reply.messageid];
+            return `
+                <div class="post-card" data-messageid="${reply.messageid}" data-chain="${currentChain.join(',')}">
+                    <div class="post-header">
+                        <div class="author-info">
+                            <span class="author">${reply.author_name}</span>
+                            <span class="dot">•</span>
+                            <span class="author-score" data-userid="${reply.owner}">${reply.author_score}</span>
+                        </div>
+                    </div>
+                    <div class="post-content">${reply.content}</div>
+                    <div class="post-footer">
+                        <button class="vote-btn upvote">⬆ ${reply.upvotes}</button>
+                        <button class="vote-btn downvote">⬇ ${reply.downvotes}</button>
+                        <button class="action-btn reply">💬 Reply</button>
+                        <span class="date">${new Date(reply.date).toLocaleString()}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            attachVoteHandlers(document);
+            document.querySelectorAll('.reply').forEach(button => {
+                attachReplyHandler(button, []);
+            });
+        });
+
+        document.querySelectorAll('.share').forEach(button => {
+            button.addEventListener('click', async function() {
+                const messageCard = this.closest('.post-card');
+                const messageid = messageCard.dataset.messageid;
+                const shareUrl = `${window.location.origin}/post/${messageid}`;
+                
+                try {
+                    await navigator.clipboard.writeText(shareUrl);
+                    const originalText = this.textContent;
+                    this.textContent = "✓ Copied!";
+                    button.classList.add('active');
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        button.classList.remove('active');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy URL:', err);
+                }
+            });
+        });
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+</script>
+
+
+
+
+</body>
+</html>

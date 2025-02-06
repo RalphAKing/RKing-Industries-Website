@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Board - Messaging Application</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+    a {
+      color: #64b5f6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background-color: #1e1e1e;
+      padding: 10px 20px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-left,
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #e0e0e0;
+      font-size: 1em;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+    .nav-btn:hover {
+      color: #64b5f6;
+    }
+    .nav-link {
+      margin-right: 15px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .nav-link:hover {
+      color: #64b5f6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    #board-title {
+      margin-top: 0;
+      font-size: 2em;
+      margin-bottom: 5px;
+    }
+
+    .post-card {
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .author-info span,
+    .author-info a {
+      margin-right: 5px;
+    }
+    .dot {
+      margin: 0 8px;
+    }
+    .post-content {
+      margin: 12px 0;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    .post-footer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .vote-btn,
+    .action-btn {
+      background: none;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+      color: #bbb;
+    }
+    .vote-btn:hover,
+    .action-btn:hover {
+      background-color: #333;
+    }
+    .vote-btn.active,
+    .action-btn.active {
+      background-color: #64b5f6;
+      color: #121212;
+      border-color: #64b5f6;
+    }
+    .date {
+      margin-left: auto;
+      color: #999;
+      font-size: 12px;
+    }
+
+    .filter-buttons {
+      margin-bottom: 20px;
+    }
+    .filter-btn {
+      background: #1e1e1e;
+      border: 1px solid #444;
+      padding: 8px 12px;
+      margin-right: 8px;
+      border-radius: 4px;
+      color: #e0e0e0;
+      cursor: pointer;
+    }
+    .filter-btn.active {
+      background: #64b5f6;
+      border-color: #64b5f6;
+      color: #121212;
+    }
+
+    /* Join Section */
+    #join-section p {
+      margin: 0;
+      padding: 8px;
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    .join-button {
+      background-color: #64b5f6;
+      color: #121212;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .join-button:hover {
+      background-color: #5a9be0;
+    }
+
+    /* Replies & Reply Form */
+    .replies-container {
+      margin-left: 20px;
+      border-left: 2px solid #333;
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+    .new-reply-button {
+      background-color: #1e1e1e;
+      border: 1px solid #444;
+      padding: 8px 16px;
+      margin: 10px 0;
+      border-radius: 4px;
+      width: 100%;
+      color: #e0e0e0;
+      cursor: pointer;
+    }
+    .new-reply-button:hover {
+      background-color: #2a2a2a;
+    }
+    .reply-form-container {
+      margin-top: 10px;
+    }
+    .reply-form {
+      margin: 10px 0;
+    }
+    .reply-input {
+      width: 100%;
+      min-height: 80px;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    .submit-reply {
+      background-color: #64b5f6;
+      color: #121212;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .submit-reply:hover {
+      background-color: #5a9be0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-left">
+      <button class="nav-btn" onclick="window.history.back()">← Back</button>
+      <a href="/home" class="nav-link">Home</a>
+    </div>
+    <div class="nav-right">
+      <!-- Additional navigation items can go here -->
+      <div id="join-section" style="display: none;">
+        <button class="join-button" id="join-board-btn">Join Board</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 id="board-title">Loading Board...</h1>
+    <p id="board-description"></p>
+    
+
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="recent">Most Recent</button>
+      <button class="filter-btn" data-filter="upvotes">Most Upvoted</button>
+      <button class="filter-btn" data-filter="downvotes">Most Downvoted</button>
+    </div>
+
+    <div id="posts-container">
+      <!-- Posts will be loaded here -->
+    </div>
+  </div>
+
+  <script>
+    const boardName = window.location.pathname.split('/')[2];
+    let currentPosts = [];
+    let currentFilter = 'recent';
+    let userId = '<%= session.get("userid", "") %>';
+
+    async function fetchBoardDetails() {
+      try {
+        const response = await fetch(`/board/${boardName}/details`);
+        const board = await response.json();
+        document.getElementById('board-title').textContent = board.name;
+        document.getElementById('board-description').textContent = board.description;
+        
+        const joinSection = document.getElementById('join-section');
+        if (userId) {
+          if (userId === board.owner) {
+            joinSection.style.display = 'block';
+            joinSection.innerHTML = '<p>You own this board</p>';
+          } else if (board.members.includes(userId)) {
+            joinSection.style.display = 'block';
+            joinSection.innerHTML = '<p>You are already a member</p>';
+          } else {
+            joinSection.style.display = 'block';
+            joinSection.innerHTML = '<button class="join-button" id="join-board-btn">Join Board</button>';
+            document.getElementById('join-board-btn').addEventListener('click', joinBoard);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching board details:', error);
+      }
+    }
+
+    async function fetchPosts() {
+      try {
+        const response = await fetch(`/board/${boardName}/messages`);
+        currentPosts = await response.json();
+        applyFilter(currentFilter);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    }
+
+    function applyFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+      });
+      let sortedPosts = [...currentPosts];
+      switch(filter) {
+        case 'recent':
+          sortedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+          break;
+        case 'upvotes':
+          sortedPosts.sort((a, b) => b.upvotes - a.upvotes);
+          break;
+        case 'downvotes':
+          sortedPosts.sort((a, b) => b.downvotes - a.downvotes);
+          break;
+      }
+      renderPosts(sortedPosts);
+    }
+
+    function renderPosts(posts) {
+      const container = document.getElementById('posts-container');
+      container.innerHTML = posts.map(post => `
+        <div class="post-card" data-messageid="${post.messageid}" data-chain="${post.messageid}">
+          <div class="post-header">
+            <div class="author-info">
+              <span class="author">${post.author_name}</span>
+              <span class="dot">•</span>
+              <span class="author-score" data-userid="${post.owner}">${post.author_score}</span>
+              <span class="dot">•</span>
+              <a href="/board/${post.board}" class="board-link">${post.board}</a>
+            </div>
+          </div>
+          <div class="post-content">${post.content}</div>
+          <div class="post-footer">
+            <button class="vote-btn upvote">⬆ ${post.upvotes}</button>
+            <button class="vote-btn downvote">⬇ ${post.downvotes}</button>
+            <button class="action-btn reply">💬 Reply</button>
+            <button class="action-btn share">↗ Share</button>
+            <span class="date">${new Date(post.date).toLocaleString()}</span>
+          </div>
+        </div>
+      `).join('');
+
+      attachVoteHandlers(document);
+      document.querySelectorAll('.reply').forEach(button => {
+        attachReplyHandler(button, []);
+      });
+      attachShareHandlers(document);
+    }
+
+    async function handleVote(button, direction) {
+      const messageCard = button.closest('.post-card');
+      const messageChain = messageCard.dataset.chain.split(',');
+      
+      const response = await fetch('/updown', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          direction: direction,
+          messageChain: messageChain
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        const upvoteBtn = messageCard.querySelector('.upvote');
+        const downvoteBtn = messageCard.querySelector('.downvote');
+        const authorScore = messageCard.querySelector('.author-score');
+        upvoteBtn.innerHTML = `⬆ ${data.upvotes}`;
+        downvoteBtn.innerHTML = `⬇ ${data.downvotes}`;
+        authorScore.textContent = data.author_score;
+        
+        if (direction === 'up') {
+          if (data.voted) {
+            upvoteBtn.classList.add('active');
+            downvoteBtn.classList.remove('active');
+          } else {
+            upvoteBtn.classList.remove('active');
+          }
+        } else {
+          if (data.voted) {
+            downvoteBtn.classList.add('active');
+            upvoteBtn.classList.remove('active');
+          } else {
+            downvoteBtn.classList.remove('active');
+          }
+        }
+      }
+    }
+    function attachVoteHandlers(element) {
+      element.querySelectorAll('.vote-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          const direction = button.classList.contains('upvote') ? 'up' : 'down';
+          handleVote(button, direction);
+        });
+      });
+    }
+
+    async function submitReply(form, parentId, parentChain) {
+      const content = form.content.value;
+      if (!content.trim()) return;
+      try {
+        const response = await fetch('/reply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            parent_id: parentId,
+            content: content,
+            parent_chain: parentChain
+          })
+        });
+        const data = await response.json();
+        if (data.success) {
+          const repliesList = form.closest('.replies-container').querySelector('.replies-list');
+          const replyHTML = createReplyCard(data.reply, parentChain);
+          repliesList.insertAdjacentHTML('afterbegin', replyHTML);
+
+          const newReply = repliesList.firstElementChild;
+          attachVoteHandlers(newReply);
+          const replyBtn = newReply.querySelector('.reply');
+          attachReplyHandler(replyBtn, [...parentChain, data.reply.messageid]);
+          
+          form.reset();
+          form.closest('.reply-form-container').style.display = 'none';
+        }
+      } catch (error) {
+        console.error('Error submitting reply:', error);
+      }
+    }
+
+    async function loadReplies(messageid, container, parentChain) {
+      const chainParam = parentChain.join(',');
+      const response = await fetch(`/replies/${messageid}?chain=${chainParam}`);
+      const replies = await response.json();
+      container.innerHTML = replies.map(reply => createReplyCard(reply, parentChain)).join('');
+      attachVoteHandlers(container);
+      container.querySelectorAll('.reply').forEach(button => {
+        attachReplyHandler(button, parentChain);
+      });
+    }
+
+    function attachReplyHandler(button, parentChain) {
+      button.addEventListener('click', function() {
+        const messageCard = this.closest('.post-card');
+        const messageid = messageCard.dataset.messageid;
+        const currentChain = [...parentChain, messageid];
+        let repliesContainer = messageCard.nextElementSibling;
+        
+        if (repliesContainer && repliesContainer.classList.contains('replies-container')) {
+          repliesContainer.remove();
+        } else {
+          const repliesHTML = `
+            <div class="replies-container">
+              <div class="replies-list"></div>
+              <button class="new-reply-button">Write a Reply</button>
+              <div class="reply-form-container" style="display: none;">
+                <form class="reply-form">
+                  <textarea name="content" class="reply-input" required></textarea>
+                  <button type="button" class="submit-reply">Post Reply</button>
+                </form>
+              </div>
+            </div>
+          `;
+          messageCard.insertAdjacentHTML('afterend', repliesHTML);
+          const container = messageCard.nextElementSibling.querySelector('.replies-list');
+          loadReplies(messageid, container, currentChain);
+          
+          const newReplyBtn = messageCard.nextElementSibling.querySelector('.new-reply-button');
+          newReplyBtn.addEventListener('click', function() {
+            const formContainer = this.nextElementSibling;
+            formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+          });
+          
+          const submitBtn = messageCard.nextElementSibling.querySelector('.submit-reply');
+          submitBtn.addEventListener('click', function() {
+            const form = this.closest('form');
+            submitReply(form, messageid, currentChain);
+          });
+        }
+      });
+    }
+
+    function createReplyCard(reply, parentChain) {
+      const currentChain = [...parentChain, reply.messageid];
+      return `
+        <div class="post-card" data-messageid="${reply.messageid}" data-chain="${currentChain.join(',')}">
+          <div class="post-header">
+            <div class="author-info">
+              <span class="author">${reply.author_name}</span>
+              <span class="dot">•</span>
+              <span class="author-score" data-userid="${reply.owner}">${reply.author_score}</span>
+            </div>
+          </div>
+          <div class="post-content">${reply.content}</div>
+          <div class="post-footer">
+            <button class="vote-btn upvote">⬆ ${reply.upvotes}</button>
+            <button class="vote-btn downvote">⬇ ${reply.downvotes}</button>
+            <button class="action-btn reply">💬 Reply</button>
+            <span class="date">${new Date(reply.date).toLocaleString()}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function attachShareHandlers(element) {
+      element.querySelectorAll('.share').forEach(button => {
+        button.addEventListener('click', async function() {
+          const messageCard = this.closest('.post-card');
+          const messageid = messageCard.dataset.messageid;
+          const shareUrl = `${window.location.origin}/post/${messageid}`;
+          
+          try {
+            await navigator.clipboard.writeText(shareUrl);
+            const originalText = this.textContent;
+            this.textContent = "✓ Copied!";
+            this.classList.add('active');
+            setTimeout(() => {
+              this.textContent = originalText;
+              this.classList.remove('active');
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy URL:', err);
+          }
+        });
+      });
+    }
+
+    async function joinBoard() {
+      try {
+        const response = await fetch(`/board/${boardName}/join`, { method: 'POST' });
+        const data = await response.json();
+        if (data.success) {
+          const joinSection = document.getElementById('join-section');
+          joinSection.innerHTML = `<p>${data.message}</p>`;
+        }
+      } catch (error) {
+        console.error('Error joining board:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchBoardDetails();
+      fetchPosts();
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+      });
+    });
+  </script>
+</body>
+</html>
