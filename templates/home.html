@@ -227,6 +227,50 @@
             margin: 1rem 0;
             line-height: 1.6;
         }
+
+        .new-reply-button {
+            background-color: #333;
+            border: 1px solid #666;
+            padding: 8px 16px;
+            margin: 10px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            color: white;
+        }
+
+        .new-reply-button:hover {
+            background-color: #444;
+        }
+
+        .reply-form-container {
+            margin-top: 10px;
+        }
+
+        .reply-input {
+            width: 100%;
+            min-height: 80px;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #666;
+            border-radius: 4px;
+            background-color: #333;
+            color: white;
+        }
+
+        .submit-reply {
+            background-color: #1a73e8;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-reply:hover {
+            background-color: #0c59a1;
+        }
+
     </style>
 </head>
 <body>
@@ -326,9 +370,7 @@
                                 <a href="/board/{{ message.board }}" class="board-link">{{ message.board }}</a>
                             </div>
                         </div>
-                        <div class="post-content">
-                            {{ message.content|safe }}
-                        </div>
+                        <div class="post-content content-container" id="content-{{ message.messageid }}"></div>
                         <div class="post-footer">
                             <button class="vote-btn upvote">⬆ {{ message.upvotes }}</button>
                             <button class="vote-btn downvote">⬇ {{ message.downvotes }}</button>
@@ -337,7 +379,25 @@
                             <span class="date">{{ message.date.strftime('%Y-%m-%d %H:%M') }}</span>
                         </div>
                     </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const contentDiv = document.getElementById('content-{{ message.messageid }}');
+                            const shadow = contentDiv.attachShadow({mode: 'open'});
+                            shadow.innerHTML = `
+                                <style>
+                                    img {
+                                        max-width: 100%;
+                                        height: auto;
+                                        display: block;
+                                        object-fit: contain;
+                                    }
+                                </style>
+                                {{ message.content|safe }}
+                            `;
+                        });
+                    </script>
                 {% endfor %}
+
             {% else %}
                 <p class="no-posts">No posts yet today.</p>
             {% endif %}
@@ -579,7 +639,8 @@
 
         function createReplyCard(reply, parentChain) {
             const currentChain = [...parentChain, reply.messageid];
-            return `
+            const uniqueId = `content-${reply.messageid}`;
+            const card = `
                 <div class="post-card" data-messageid="${reply.messageid}" data-chain="${currentChain.join(',')}">
                     <div class="post-header">
                         <div class="author-info">
@@ -588,7 +649,7 @@
                             <span class="author-score" data-userid="${reply.owner}">${reply.author_score}</span>
                         </div>
                     </div>
-                    <div class="post-content">${reply.content}</div>
+                    <div class="post-content content-container" id="${uniqueId}"></div>
                     <div class="post-footer">
                         <button class="vote-btn upvote">⬆ ${reply.upvotes}</button>
                         <button class="vote-btn downvote">⬇ ${reply.downvotes}</button>
@@ -597,7 +658,26 @@
                     </div>
                 </div>
             `;
+            
+            setTimeout(() => {
+                const host = document.getElementById(uniqueId);
+                const shadow = host.attachShadow({mode: 'open'});
+                shadow.innerHTML = `
+                    <style>
+                        img {
+                            max-width: 100%;
+                            height: auto;
+                            display: block;
+                            object-fit: contain;
+                        }
+                    </style>
+                    ${reply.content}
+                `;
+            }, 0);
+            
+            return card;
         }
+
 
         document.addEventListener('DOMContentLoaded', function() {
             attachVoteHandlers(document);

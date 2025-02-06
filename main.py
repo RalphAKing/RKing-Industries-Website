@@ -1993,7 +1993,6 @@ def home():
             {'members': account['userid']}
         ]}))
 
-
         message_data = messages()
         today = datetime.now() - timedelta(days=1)
         top_posts = list(message_data.find({
@@ -2007,6 +2006,7 @@ def home():
             author = logged_accounts.find_one({'userid': message['owner']})
             message['author_name'] = author['username']
             message['author_score'] = author.get('score', 0)
+            message['content'] = message['content']
 
         return render_template('home.html', 
                              loggedin=True, 
@@ -2016,6 +2016,7 @@ def home():
                              username=account['username'])
     
     return redirect('/login')
+
 
 
 

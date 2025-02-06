@@ -315,7 +315,7 @@
               <a href="/board/${post.board}" class="board-link">${post.board}</a>
             </div>
           </div>
-          <div class="post-content">${post.content}</div>
+          <div class="post-content content-container" id="content-${post.messageid}"></div>
           <div class="post-footer">
             <button class="vote-btn upvote">⬆ ${post.upvotes}</button>
             <button class="vote-btn downvote">⬇ ${post.downvotes}</button>
@@ -326,12 +326,30 @@
         </div>
       `).join('');
 
+      posts.forEach(post => {
+          const host = document.getElementById(`content-${post.messageid}`);
+          const shadow = host.attachShadow({mode: 'open'});
+          shadow.innerHTML = `
+              <style>
+                  img {
+                      max-width: 100%;
+                      height: auto;
+                      display: block;
+                      object-fit: contain;
+                  }
+              </style>
+              ${post.content}
+          `;
+      });
+
+
       attachVoteHandlers(document);
       document.querySelectorAll('.reply').forEach(button => {
         attachReplyHandler(button, []);
       });
       attachShareHandlers(document);
     }
+
 
     async function handleVote(button, direction) {
       const messageCard = button.closest('.post-card');
