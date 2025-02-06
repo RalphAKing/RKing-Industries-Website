@@ -10,6 +10,16 @@ RKing Industries website serves as our digital platform to connect with customer
 - - You can find this on the gmail api refrance website at https://developers.google.com/gmail/api/guides
 - Fill out the config.yaml file with the required configurations.
 
+## Services
+- Vape detectors api
+- Beehive Integration
+- Forums
+- Cloud Storage:
+- Whiteboard
+- Darts Game
+- Store
+- RKing Messaging
+
 ## Contributing
 We value community input! Here's how you can help make our website better:
 
