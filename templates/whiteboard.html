@@ -45,22 +45,43 @@
             padding: 5px;
             margin-left: 10px;
         }
-        .home-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--primary-color);
-            color: rgb(0, 0, 0);
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+        .tools {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
-        .home-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        .color-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
         }
+
+        .tool-icon {
+            font-size: 32px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        #search-input {
+            padding: 8px;
+            margin-left: 15px;
+            font-size: 16px;
+        }
+
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 </head>
 <body>
     <div class="tools">
@@ -71,7 +92,6 @@
         <div class="tool-icon" id="eraser">🧹</div>
         <div class="tool-icon" id="save-btn">💾</div>
         <input type="text" id="search-input" placeholder="🔍 Search labels...">
-        <a href="/" class="home-button">Return Home</a>
     </div>
     <div id="canvas-container">
         <canvas id="whiteboard"></canvas>
@@ -267,6 +287,64 @@
             
             ctx.restore();
         }
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchcancel', stopDrawing);
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            if (e.touches.length === 1) {
+                startDrawing({
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+            } else if (e.touches.length === 2) {
+                currentState.isPanning = true;
+                currentState.startPanX = touch.clientX - currentState.offsetX;
+                currentState.startPanY = touch.clientY - currentState.offsetY;
+            }
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            if (e.touches.length === 1) {
+                draw({
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+            } else if (e.touches.length === 2 && currentState.isPanning) {
+                currentState.offsetX = touch.clientX - currentState.startPanX;
+                currentState.offsetY = touch.clientY - currentState.startPanY;
+                redrawCanvas();
+            }
+        }
+
+        let lastTap = 0;
+        canvas.addEventListener('touchend', function(e) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 500 && tapLength > 0) {
+                const touch = e.changedTouches[0];
+                const text = prompt('Enter text:');
+                if (text) {
+                    const x = toCanvasX(touch.clientX);
+                    const y = toCanvasY(touch.clientY);
+                    elements.push({
+                        type: 'text',
+                        text,
+                        x,
+                        y,
+                        color: currentState.currentColor
+                    });
+                    redrawCanvas();
+                }
+            }
+            lastTap = currentTime;
+        });
+
     </script>
 </body>
 </html>
