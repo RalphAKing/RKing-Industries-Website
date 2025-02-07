@@ -817,6 +817,10 @@ def index():
             return render_template('index.html', loggedin=True, link=link)
     return render_template('index.html')
 
+@app.route('/devlog')
+def devlog():
+    return render_template('devlog.html')
+
 @app.route('/dartsgame')
 def dartsgame():
     return render_template('dartsgame.html')
