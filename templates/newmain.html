@@ -232,7 +232,6 @@ a.button {
             justify-content: center;
         }
 
-        /* Link Box Styles */
         .link-box {
             border: 1px solid #ddd;
             padding: 20px;
@@ -259,7 +258,6 @@ a.button {
             background-color: #f0f0f0;
         }
 
-        /* Responsive Design for Mobile */
         @media (max-width: 768px) {
             .link-box {
                 width: calc(50% - 40px);
@@ -765,7 +763,7 @@ a.button {
             <div class="scroll-list">
                 {% for id, task in data.items() %}
                     {% if not task.completed %}
-                    <div class="task-item">
+                    <div class="task-item" data-assignment-id="{{ id }}">
                         <h2>{{ task.title }}</h2>
                         <p><strong>Deadline:</strong> {{ task.deadline }}</p>
                         <p><strong>Set by:</strong> {{ task.set_by }}</p>
@@ -781,8 +779,7 @@ a.button {
                             <li><a style="color: #333;" href="https://beehive.lionhearttrust.org.uk/#/main/assignments">{{ task.files[link] }}</a></li>
                             {% endfor %}
                              </p>
-                        <a  href="/submit/{{ id }}"><button>Submit</button></a>
-                    
+                    <button onclick="submitAssignment('{{ id }}')">Submit</button>                                        
                     </div>
                     {% endif %}
                 {% endfor %}
@@ -895,6 +892,29 @@ a.button {
         </div>
     </section>
     <script>
+        function submitAssignment(id) {
+            fetch(`/submit/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const assignmentElement = document.querySelector(`[data-assignment-id="${id}"]`);
+                        if (assignmentElement) {
+                            assignmentElement.remove();
+                        }
+                        const submittedSection = document.getElementById('submitted');
+                        const unsubmittedAssignment = document.querySelector(`#unsubmitted [data-assignment-id="${id}"]`);
+                        if (unsubmittedAssignment) {
+                            const clone = unsubmittedAssignment.cloneNode(true);
+                            const submitButton = clone.querySelector('button');
+                            if (submitButton) {
+                                submitButton.remove();
+                            }
+                            submittedSection.querySelector('.scroll-list').appendChild(clone);
+                            unsubmittedAssignment.remove();
+                        }
+                    }
+                });
+        }
         function showSection(sectionId) {
             var sections = document.querySelectorAll('section');
             sections.forEach(function(section) {

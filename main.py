@@ -761,7 +761,7 @@ def submit(ass):
                 )
                 print(result)
         
-        return redirect('/fasthive/')
+        return jsonify({'success': True})
     return redirect('/login')
 
 def rescan():
