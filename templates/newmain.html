@@ -789,7 +789,7 @@ a.button {
         <section id="submitted" class="container">
             <h1>Submitted Assignments</h1>
             <div class="scroll-list">
-                {% for id, task in data.items() %}
+                {% for id, task in data|dictsort(true)|reverse %}
                     {% if task.completed %}
                     <div class="task-item">
                         <h2>{{ task.title }}</h2>
@@ -810,7 +810,7 @@ a.button {
                     {% endif %}
                 {% endfor %}
             </div>
-        </section>
+        </section>        
     </section>
 
 <section id="timetable" class="container">
