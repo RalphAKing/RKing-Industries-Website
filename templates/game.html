@@ -298,53 +298,49 @@ function calculateFinishes(score) {
 
     const singles = Array.from({length: 20}, (_, i) => i + 1);
     const doubles = singles.map(x => x * 2).reverse(); 
-    const triples = singles.map(x => x * 3).reverse(); 
-    
-    let finishes = [];
-    
+    const triples = singles.map(x => x * 3).reverse();
     const bull = 25;
     const dBull = 50;
+    let finishes = [];
+
+    if (score % 2 === 0 && score <= 40) {
+        finishes.push(`D${score/2}`);
+        return finishes;
+    }
+
+    if (score === 50) {
+        finishes.push('Bull');
+        return finishes;
+    }
 
     for (let double of doubles) {
-        if (double <= score) {
-            let remaining = score - double;
-
-            if (remaining === 0) {
-                finishes.push(`D${double / 2}`); 
-                return finishes; 
-            }
-
-            for (let first of [...triples, ...singles, bull]) {
-                remaining = score - first - double;
-
-                if (doubles.includes(remaining) || remaining === dBull) {
-                    const firstStr = first > 25 ? `T${Math.floor(first/3)}` : first === 25 ? 'Bull' : first.toString();
-                    const remainingStr = remaining === 50 ? 'Bull' : `D${remaining/2}`;
-                    
-                    finishes.push(`${firstStr} D${double / 2} ${remainingStr}`);
-                    if (finishes.length >= 3) return finishes; 
-                }
+        let remaining = score - double;
+        if (remaining > 0) {
+            if (singles.includes(remaining) || triples.includes(remaining) || remaining === bull || remaining === dBull) {
+                const remainingStr = remaining > 25 ? 
+                    (remaining % 3 === 0 ? `T${remaining/3}` : remaining.toString()) : 
+                    (remaining === 25 ? 'Bull' : remaining.toString());
+                finishes.push(`${remainingStr} D${double/2}`);
+                if (finishes.length >= 3) return finishes;
             }
         }
     }
 
-    for (let first of [...triples, ...singles, bull]) {
-        for (let second of [...singles, ...doubles, ...triples, bull]) {
-            let remaining = score - first - second;
-
-            if (doubles.includes(remaining) || remaining === dBull) {
+    for (let double of doubles) {
+        for (let first of [...triples, ...singles, bull]) {
+            let remaining = score - first - double;
+            if (remaining > 0 && (singles.includes(remaining) || triples.includes(remaining) || remaining === bull)) {
                 const firstStr = first > 25 ? `T${Math.floor(first/3)}` : first === 25 ? 'Bull' : first.toString();
-                const secondStr = second > 25 ? `T${Math.floor(second/3)}` : second === 25 ? 'Bull' : second.toString();
-                const remainingStr = remaining === 50 ? 'Bull' : `D${remaining/2}`;
-                
-                finishes.push(`${firstStr} ${secondStr} ${remainingStr}`);
-                if (finishes.length >= 3) return finishes; 
+                const remainingStr = remaining > 25 ? `T${Math.floor(remaining/3)}` : remaining === 25 ? 'Bull' : remaining.toString();
+                finishes.push(`${firstStr} ${remainingStr} D${double/2}`);
+                if (finishes.length >= 3) return finishes;
             }
         }
     }
-    
+
     return finishes;
 }
+
 
 
 
