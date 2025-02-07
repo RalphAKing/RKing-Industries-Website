@@ -787,12 +787,12 @@ def rescan():
     task_statuses[id] = True
 
 
-# Schedule the rescan job to run every hour
+# Schedule the rescan job to run every 1/2 hour
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(
     func=rescan,
-    trigger=IntervalTrigger(hours=1.5),
+    trigger=IntervalTrigger(hours=0.5),
     id='rescan_job',
     name='Rescan database every hour',
     replace_existing=True
