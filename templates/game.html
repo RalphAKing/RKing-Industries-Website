@@ -144,10 +144,10 @@ body {
 #number-pad {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
     margin: 0 auto;
     width: 100%;
-    max-width: 200px; 
+    max-width: 300px; 
 }
 
 .num-row {
@@ -157,10 +157,10 @@ body {
 
 .num-row button {
     flex: 1;
-    padding: 15px;
-    font-size: 1.2em;
+    padding: 25px; 
+    font-size: 1.5em; 
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     background-color: #f0f0f0;
     color: #333;
     cursor: pointer;
@@ -195,9 +195,13 @@ body {
         font-size: 2.5em;
     }
 
-    num-row button {
-        padding: 10px;
-        font-size: 1em;
+    #number-pad {
+        max-width: 280px;
+    }
+
+    .num-row button {
+        padding: 20px;
+        font-size: 1.3em;
     }
 }
 
@@ -214,9 +218,13 @@ body {
         font-size: 2em;
     }
 
+    #number-pad {
+        max-width: 260px;
+    }
+    
     .num-row button {
-        padding: 8px;
-        font-size: 0.9em;
+        padding: 18px;
+        font-size: 1.2em;
     }
 }
 </style>
