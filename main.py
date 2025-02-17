@@ -26,6 +26,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_caching import Cache
+from flask_compress import Compress
 
 
 # Load config.yaml
@@ -48,6 +49,8 @@ cache = Cache(app, config={
     'CACHE_TYPE': 'simple',
     'CACHE_DEFAULT_TIMEOUT': 300
 })
+
+Compress(app)
 
 class Whiteboard(whiteboarddb.Model):
     id = whiteboarddb.Column(whiteboarddb.Integer, primary_key=True)
