@@ -25,6 +25,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from flask_sqlalchemy import SQLAlchemy
 import json
+from flask_caching import Cache
+
 
 # Load config.yaml
 with open('config.yaml') as f:
@@ -41,6 +43,11 @@ app.jinja_env.globals.update(zip=zip)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///whiteboard.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 whiteboarddb = SQLAlchemy(app)
+
+cache = Cache(app, config={
+    'CACHE_TYPE': 'simple',
+    'CACHE_DEFAULT_TIMEOUT': 300
+})
 
 class Whiteboard(whiteboarddb.Model):
     id = whiteboarddb.Column(whiteboarddb.Integer, primary_key=True)
@@ -802,6 +809,7 @@ scheduler.start()
 # Routes
 
 @app.route('/')
+@cache.memoize(timeout=60)
 def index():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -818,18 +826,22 @@ def index():
     return render_template('index.html')
 
 @app.route('/devlog')
+@cache.memoize(timeout=60)
 def devlog():
     return render_template('devlog.html')
 
 @app.route('/dartsgame')
+@cache.memoize(timeout=60)
 def dartsgame():
     return render_template('dartsgame.html')
 
 @app.route('/game')
+@cache.memoize(timeout=60)
 def game():
     return render_template('game.html')
 
 @app.route('/store')
+@cache.memoize(timeout=60)
 def store():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -839,6 +851,7 @@ def store():
     return render_template('store.html', products=config['products'])
 
 @app.route('/vapedetectors')
+@cache.memoize(timeout=60)
 def vapedetectorspage():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -849,6 +862,7 @@ def vapedetectorspage():
     return render_template('vapedetectors.html')
 
 @app.route('/fasthiveinfo')
+@cache.memoize(timeout=60)
 def fasthiveinfo():
     link=False
     if 'userid' in session:
@@ -865,6 +879,7 @@ def fasthiveinfo():
     return render_template('info.html', link=link)
 
 @app.route('/contact', methods=['GET', 'POST'])
+@cache.memoize(timeout=60)
 def contact():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -892,6 +907,7 @@ def contact():
 
 
 @app.route('/signup', methods=["GET", "POST"])
+@cache.memoize(timeout=60)
 def signup():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -939,6 +955,7 @@ def signup():
         return render_template('signup.html')
 
 @app.route('/login', methods=["GET", "POST"])
+@cache.memoize(timeout=60)
 def login():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -970,6 +987,7 @@ def login():
 
 
 @app.route('/verify', methods=["GET", "POST"])
+@cache.memoize(timeout=60)
 def verify_page():
     if 'userid' in session:
         logged_accounts = accounts()
@@ -995,6 +1013,7 @@ def verify_page():
     return render_template('verify.html')
 
 @app.route('/verify/<confermationcode>', methods=["GET"])
+@cache.memoize(timeout=60)
 def verify(confermationcode):
     if 'userid' in session:
         logged_accounts = accounts()
@@ -1054,6 +1073,7 @@ RKing Industries Team
     return render_template('verify.html', error='Invalid verification code')
 
 @app.route('/vapedetectors/panel', methods=['GET','POST'])
+@cache.memoize(timeout=60)
 def panel():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -1426,6 +1446,7 @@ def fasthivelogin(username, password):
 
 
 @app.route('/profile', methods=['POST', 'GET'])
+@cache.memoize(timeout=60)
 def profile():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -1494,10 +1515,12 @@ def profile():
 
 
 @app.route('/events/<ass>')
+@cache.memoize(timeout=60)
 def eventss(ass):
     return 'Currently not avalable <a href="/">Home</a> '
 
 @app.route('/fasthive/')
+@cache.memoize(timeout=60)
 def fasthive():
     if 'userid' in session:
         logged_accounts=accounts()
@@ -1622,6 +1645,7 @@ def logout():
     return redirect('/') 
 
 @app.route('/whiteboard')
+@cache.memoize(timeout=60)
 def whiteboard():
     return render_template('whiteboard.html')
 
@@ -1646,14 +1670,17 @@ def load():
     return jsonify(success=False)
 
 @app.route('/privacy')
+@cache.memoize(timeout=60)
 def privacy():
     return render_template('privacy.html')
 
 @app.route('/tos')
+@cache.memoize(timeout=60)
 def tos():
     return render_template('tos.html')
 
 @app.route('/forums')
+@cache.memoize(timeout=60)
 def forums_page():
     forumsdb = forums()
     questions = forumsdb.find().sort('timestamp', -1)
@@ -1710,6 +1737,7 @@ def post_answer(question_id):
 
 
 @app.route('/cloudstorage')
+@cache.memoize(timeout=60)
 def cloudstorage():
     if 'userid' in session:
         logged_accounts = accounts()
@@ -1978,6 +2006,7 @@ def updown():
 
 
 @app.route('/home')
+@cache.memoize(timeout=300)
 def home():
     if 'userid' in session:
         logged_accounts = accounts()
