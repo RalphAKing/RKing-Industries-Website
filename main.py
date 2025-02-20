@@ -189,26 +189,26 @@ and enter the code: {code}
 
 If you did not create this account, please ignore this email.
 
-Best regards,
+Best regards,  
 RKing Industries Team
 """
     if resend == True:
         message = f"""
 Dear User,
 
-You have requested to resend the verification email.
+You have requested to resend the verification email.  
 To complete your account setup, please click the verification link below:
 
 {ymaldata['website']}/verify/{code}
 
-or visit {ymaldata['website']}/verify
+or visit {ymaldata['website']}/verify  
 and enter the code: {code}
 
 If you did not create this account, please ignore this email.
 
-Best regards,
+Best regards,  
 RKing Industries Team
-    """
+"""
     user = GMailDeleter()
     user.send_email(message, email, 'Verifcation Email', 'plain')   
 
@@ -698,9 +698,9 @@ def fetchall(token,id,username,password):
                 message = """
 Dear User,
 
-Great news! Your Beehive account has finished linking
+Great news! Your Beehive account has been successfully linked.
 
-Best regards,
+Best regards,  
 RKing Industries Team
 """
                 logged_accounts=accounts()
@@ -1067,7 +1067,7 @@ For security purposes, please keep your login credentials safe and never share t
 
 Need help? Our support team is here for you.
 
-Best regards,
+Best regards,  
 RKing Industries Team
 """
         user.send_email(message, check['email'], 'Account Varified', 'plain')
@@ -1159,10 +1159,10 @@ def panel():
                         for _, email in (emails['emails']).items():
                             user = GMailDeleter()
                             message = f"""
-Alert: Device Offline
-Device Location: {key}
-Status: No telemetry ping received
-Time Elapsed: >30 minutes
+Alert: Device Offline  
+Device Location: {key}  
+Status: No telemetry ping received  
+Time Elapsed: >30 minutes  
 Last Known Ping: {value['last_ping']}
 
 Please check the device connection and status. If issues persist, contact technical support.
@@ -1263,7 +1263,14 @@ def api():
                 graph(api_key)
                 for _, email in (emails['emails']).items():
                     user = GMailDeleter()
-                    user.send_email(f"""Vape Detected: \nDate: {str((datetime.now()).strftime('%d-%m-%Y'))} \nTime: {str((datetime.now()).strftime('%H:%M'))}\nRoom: {room}""", email, "Vape Detected" , 'plain') 
+                    message = f"""
+Vape Detected:  
+Date: {str((datetime.now()).strftime('%d-%m-%Y'))}  
+Time: {str((datetime.now()).strftime('%H:%M'))}  
+Room: {room}
+"""
+
+                    user.send_email(message, email, "Vape Detected" , 'plain') 
                 updated_status = {
                     "status": "online",
                     "last_ping": f"{str((datetime.now()).strftime('%d-%m-%Y %H:%M'))}"
@@ -1302,7 +1309,13 @@ def api():
                 emails=vapedetectorsdb.find_one({api_key: {"$exists": True}})
                 for _, email in (emails['emails']).items():
                     user = GMailDeleter()
-                    user.send_email(f"""Tamper Detected: \nDate: {str((datetime.now()).strftime('%d-%m-%Y'))} \nTime: {str((datetime.now()).strftime('%H:%M'))}\nRoom: {room}""", email, "Vape Detected" , 'plain') 
+                    message = f"""
+Tamper Detected:  
+Date: {str((datetime.now()).strftime('%d-%m-%Y'))}  
+Time: {str((datetime.now()).strftime('%H:%M'))}  
+Room: {room}
+"""
+                    user.send_email(message, email, "Vape Detected" , 'plain') 
                 updated_status = {
                     "status": "online",
                     "last_ping": f"{str((datetime.now()).strftime('%d-%m-%Y %H:%M'))}"
@@ -1330,7 +1343,12 @@ def api():
                     emails=vapedetectorsdb.find_one({api_key: {"$exists": True}})
                     for _, email in (emails['emails']).items():
                         user = GMailDeleter()
-                        user.send_email(f'New VapeDetector adopted: {room}\nThis will be added to the panel.', email, "Device Adopted", 'plain') 
+                        message = f"""
+New VapeDetector Adopted: {room}  
+This device has been added to the panel.
+"""
+
+                        user.send_email(message, email, "Device Adopted", 'plain') 
             else:
                 return jsonify({"Invalid Reason": "Invalid reason provided"}), 400
             return jsonify({"message": "success"}), 200
