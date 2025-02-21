@@ -10,15 +10,15 @@ RKing Industries website serves as our digital platform to connect with customer
 - - You can find this on the gmail api refrance website at https://developers.google.com/gmail/api/guides
 - Fill out the config.yaml file with the required configurations.
 
-## Services
-- Vape detectors api
-- Beehive Integration
-- Forums
-- Cloud Storage:
-- Whiteboard
-- Darts Game
-- Store
-- RKing Messaging
+### Core Services
+- **Vape Detector API** - Real-time monitoring and alert system
+- **Beehive Integration** - School management system integration
+- **Forums** - Community discussion platform
+- **Cloud Storage** - Secure file storage and sharing
+- **Interactive Whiteboard** - Real-time collaborative drawing
+- **Darts Game** - Interactive darts fame
+- **Store** 
+- **RKing Messaging** - Messaging service like reddit or twitter
 
 ## Contributing
 We value community input! Here's how you can help make our website better:
@@ -27,6 +27,10 @@ We value community input! Here's how you can help make our website better:
 - Suggest improvements or new features
 - Submit pull requests with fixes or enhancements
 - Share feedback about user experience
+
+## Database Setup
+- MongoDB for main data storage
+- SQLite for whiteboard functionality
 
 ## Bug Reports
 When reporting bugs, please include:
