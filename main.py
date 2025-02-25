@@ -910,7 +910,7 @@ def contact():
 
 
 @app.route('/signup', methods=["GET", "POST"])
-@cache.memoize(timeout=60)
+
 def signup():
     if 'userid' in session:
         logged_accounts=accounts()
