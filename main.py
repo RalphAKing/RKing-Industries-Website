@@ -990,7 +990,6 @@ def login():
 
 
 @app.route('/verify', methods=["GET", "POST"])
-@cache.memoize(timeout=60)
 def verify_page():
     if 'userid' in session:
         logged_accounts = accounts()
