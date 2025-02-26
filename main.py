@@ -958,7 +958,7 @@ def signup():
         return render_template('signup.html')
 
 @app.route('/login', methods=["GET", "POST"])
-@cache.memoize(timeout=60)
+
 def login():
     if 'userid' in session:
         logged_accounts=accounts()
