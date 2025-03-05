@@ -957,36 +957,41 @@ def signup():
     else:
         return render_template('signup.html')
 
-@app.route('/login', methods=["GET", "POST"])
 
+@app.route('/login', methods=["GET", "POST"])
 def login():
     if 'userid' in session:
         logged_accounts=accounts()
         account = logged_accounts.find_one({'userid':session['userid']})
         if account != None:
-            return redirect('/')
+            redirect_url = request.args.get('next', '/')
+            return redirect(redirect_url)
         else:
             session.pop('userid', None)
     if request.method == 'POST':
         logged_accounts=accounts()
         email = (request.form['email']).lower()
         password = request.form['password']
+        redirect_url = request.form.get('next', '/')
+        print(redirect_url)
 
         account = logged_accounts.find_one({'email':email})
         if account != None:
             if check_password_hash(account['password'], password):
                 session['userid'] = account['userid']
-                
-                return redirect('/')
+                return redirect(redirect_url)
             else:
-                return render_template('login.html', error='Invalid Password')
+                return render_template('login.html', error='Invalid Password', next=redirect_url)
         else:
             unaccounts = unverified_accounts()
             if unaccounts.find_one({'email':email}):
                 return redirect('/verify')
-            return render_template('login.html', error='Invalid Email')
+            return render_template('login.html', error='Invalid Email', next=redirect_url)
 
-    return render_template('login.html')
+    redirect_url = request.args.get('next', '/')
+    return render_template('login.html', next=redirect_url)
+
+
 
 
 @app.route('/verify', methods=["GET", "POST"])
