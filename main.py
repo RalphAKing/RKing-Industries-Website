@@ -989,6 +989,7 @@ def login():
             return render_template('login.html', error='Invalid Email', next=redirect_url)
 
     redirect_url = request.args.get('next', '/')
+    print(redirect_url)
     return render_template('login.html', next=redirect_url)
 
 
@@ -1175,7 +1176,7 @@ Please check the device connection and status. If issues persist, contact techni
     
         return render_template('panel.html', status=info[apikey]['status'], emails=info['emails'], issues=info[apikey]['issues'],apikey=apikey)
 
-    return redirect('/login')
+    return redirect('/login?next=/panel')
 
 @app.route('/api', methods=["GET", "POST"])
 def api():
@@ -1533,7 +1534,7 @@ def profile():
                         return render_template('profile.html', error2='Invalid Beehive credentials', link=link)
 
             return render_template('profile.html',link=link)
-    return redirect('/login')
+    return redirect('/login?next=/profile')
 
 
 
@@ -1552,7 +1553,7 @@ def fasthive():
         account = logged_accounts.find_one({'userid':session['userid']})
         if account == None:
             session.pop('userid', None)
-            return redirect('/login')
+            return redirect('/login?next=/fasthive')
         try:
             link=account['beehivelinked']
         except:
@@ -1769,7 +1770,7 @@ def cloudstorage():
         account = logged_accounts.find_one({'userid': session['userid']})
         if account == None:
             session.pop('userid', None)
-            return redirect('/login')
+            return redirect('/login?next=/cloudstorage')
             
         try:
             with open('files/headerfile.json', 'r') as f:
@@ -1790,7 +1791,7 @@ def cloudstorage():
                 
         return render_template('cloudstorage.html', files=user_files)
         
-    return redirect('/login')
+    return redirect('/login?next=/cloudstorage')
 
 
 @app.route('/cloudstorage/upload', methods=['POST'])
@@ -2026,8 +2027,6 @@ def updown():
         })
             
     return jsonify({'success': False, 'error': 'Not logged in'})
-
-
 
 
 @app.route('/home')
