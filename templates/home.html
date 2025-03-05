@@ -277,9 +277,11 @@
 <body>
     <header>
         <div class="user-info">
-            <span>{{ username }}</span>
+            {% if loggedin %}
+                <span>{{ username }}</span>
+            {% endif %}
             <div class="boards-dropdown">
-                <button class="dropdown-btn">Your Boards ▼</button>
+                <button class="dropdown-btn">{% if loggedin %}Your Boards{% else %}All Boards{% endif %} ▼</button>
                 <div class="dropdown-content">
                     {% if boards %}
                         {% for board in boards %}
@@ -307,11 +309,17 @@
                 </div>
             </div>
         </div>
+    
         <div class="header-buttons">
-            <span><button class="header-button" onclick="openModal('postModal')">Create New Post</button></span>
-            <span></span><button class="header-button" onclick="openModal('boardModal')">Create New Board</button></span>
+            {% if loggedin %}
+                <button class="header-button" onclick="openModal('postModal')">Create New Post</button>
+                <button class="header-button" onclick="openModal('boardModal')">Create New Board</button>
+            {% else %}
+                <a href="/login" class="header-button">Login</a>
+            {% endif %}
         </div>
     </header>
+    
 
     <div class="container">
         <!-- Post Creation Modal -->

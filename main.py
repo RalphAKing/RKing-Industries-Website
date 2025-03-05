@@ -2026,16 +2026,37 @@ def updown():
 
 
 @app.route('/home')
-@cache.memoize(timeout=300)
 def home():
+    board_data = boards()
+    message_data = messages()
+    logged_accounts = accounts()
+    
+    all_boards = list(board_data.find())
+    
+    today = datetime.now() - timedelta(days=1)
+    top_posts = list(message_data.find({
+        'date': {'$gte': today}
+    }).sort([
+        ('upvotes', -1),
+        ('downvotes', 1)
+    ]).limit(10))
+
+    for message in top_posts:
+        author = logged_accounts.find_one({'userid': message['owner']})
+        message['author_name'] = author['username']
+        message['author_score'] = author.get('score', 0)
+        message['content'] = message['content']
+
     if 'userid' in session:
-        logged_accounts = accounts()
         account = logged_accounts.find_one({'userid':session['userid']})
-        if account == None:
+        if account is None:
             session.pop('userid', None)
-            return redirect('/login')
-        
-        board_data = boards()
+            return render_template('home.html', 
+                                loggedin=False,
+                                messages=top_posts,
+                                boards=all_boards,
+                                not_user_boards=[])
+
         user_boards = list(board_data.find({'$or': [
             {'owner': account['userid']},
             {'members': account['userid']}
@@ -2046,30 +2067,18 @@ def home():
             {'members': account['userid']}
         ]}))
 
-        message_data = messages()
-        today = datetime.now() - timedelta(days=1)
-        top_posts = list(message_data.find({
-            'date': {'$gte': today}
-        }).sort([
-            ('upvotes', -1),
-            ('downvotes', 1)
-        ]).limit(10))
-
-        for message in top_posts:
-            author = logged_accounts.find_one({'userid': message['owner']})
-            message['author_name'] = author['username']
-            message['author_score'] = author.get('score', 0)
-            message['content'] = message['content']
-
         return render_template('home.html', 
-                             loggedin=True, 
-                             boards=user_boards, 
-                             not_user_boards=not_user_boards,
+                             loggedin=True,
+                             boards=user_boards,
+                             not_user_boards=not_user_boards, 
                              messages=top_posts,
                              username=account['username'])
-    
-    return redirect('/login')
 
+    return render_template('home.html',
+                         loggedin=False,
+                         messages=top_posts,
+                         boards=[],
+                         not_user_boards=all_boards)
 
 
 
