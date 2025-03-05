@@ -14,12 +14,13 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #1e293b, #0f172a);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            color: var(--text-color);
         }
 
         .verify-container {
@@ -27,16 +28,16 @@
             width: 100%;
             margin: 20px auto;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: #f8fafc;
             margin-bottom: 35px;
             font-size: 36px;
             font-weight: 700;
@@ -45,10 +46,56 @@
         }
 
         h2 {
-            color: #34495e;
+            color: #f8fafc;
             margin: 25px 0 15px;
             font-size: 24px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            margin-bottom: 20px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        button:active {
+            transform: translateY(-1px);
         }
 
         .error {
@@ -72,52 +119,6 @@
             border-left: 5px solid #2ecc71;
         }
 
-        form {
-            margin-bottom: 30px;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9);
-            margin-bottom: 20px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
-            transform: translateY(-2px);
-        }
-
-        button {
-            width: 100%;
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            padding: 16px 32px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(52, 152, 219, 0.3);
-        }
-
-        button:active {
-            transform: translateY(-1px);
-        }
-
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-10px); }
@@ -135,6 +136,7 @@
             }
         }
     </style>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
