@@ -14,7 +14,7 @@
             --primary-color: #2563eb;
             --secondary-color: #1e40af;
             --text-color: #f8fafc;
-            --overlay-color: rgba(0, 0, 0, 0.7);
+            --card-bg: rgba(30, 41, 59, 0.8);
         }
 
         body {
@@ -24,94 +24,6 @@
             background: linear-gradient(135deg, #1e293b, #0f172a) fixed;
             color: var(--text-color);
             min-height: 100vh;
-            color-scheme: dark;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 3rem;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 100px auto 0;
-            padding: 2rem;
-        }
-
-        .store-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .product-info {
-            padding: 1.5rem;
-        }
-
-        .product-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 0 0 1rem 0;
-            background: linear-gradient(45deg, #60a5fa, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .product-description {
-            color: var(--text-color);
-            opacity: 0.8;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .product-price {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .buy-button {
-            display: block;
-            padding: 1rem 2rem;
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .buy-button:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
         }
 
         .home-btn {
@@ -128,15 +40,121 @@
             gap: 0.5rem;
             font-weight: 600;
             transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
         .home-btn:hover {
             background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem;
+        }
+
+        .container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 1rem 0;
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .product-description {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+
+        .buy-button {
+            display: block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .buy-button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
         }
 
         @media (max-width: 768px) {
             .store-grid {
                 grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            .container h1 {
+                font-size: 2rem;
+                padding: 0 1rem;
+            }
+
+            .home-btn {
+                top: 1rem;
+                left: 1rem;
             }
         }
     </style>

@@ -13,8 +13,6 @@
             --primary-color: #2563eb;
             --secondary-color: #1e40af;
             --text-color: #f8fafc;
-            --overlay-color: rgba(0, 0, 0, 0.7);
-            -webkit-overflow-scrolling: touch; 
         }
 
         body, html {
@@ -23,20 +21,28 @@
             font-family: 'Poppins', sans-serif;
             height: 100%;
             width: 100%;
-            background: url('/static/images/homepage.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
             color: var(--text-color);
+            overflow-x: hidden;
         }
 
-        .overlay {
-            background: var(--overlay-color);
+        .particles {
+            position: fixed;
             width: 100%;
             height: 100%;
-            position: fixed;
-            backdrop-filter: blur(3px);
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: #ffffff10;
+            border-radius: 50%;
+            animation: moveParticle 8s infinite linear;
         }
 
         .navbar {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
             position: fixed;
             top: 0;
             width: 100%;
@@ -45,8 +51,6 @@
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
             box-sizing: border-box; 
         }
 
@@ -82,7 +86,6 @@
             white-space: nowrap;  
         }
 
-
         .nav-links a:hover {
             background: var(--primary-color);
         }
@@ -105,8 +108,9 @@
             margin: 0;
             background: linear-gradient(45deg, #60a5fa, #3b82f6);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: titleFade 1s ease-in;
+            animation: float 6s ease-in-out infinite;
         }
 
         .strapline {
@@ -141,6 +145,11 @@
             display: inline-block;
         }
 
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
         .primary-cta {
             background: var(--primary-color);
             color: white;
@@ -148,7 +157,6 @@
 
         .primary-cta:hover {
             background: var(--secondary-color);
-            transform: translateY(-2px);
         }
 
         .secondary-cta {
@@ -158,7 +166,16 @@
 
         .secondary-cta:hover {
             background: var(--primary-color);
-            transform: translateY(-2px);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes moveParticle {
+            0% { transform: translateY(100vh) translateX(-10px); }
+            100% { transform: translateY(-100px) translateX(10px); }
         }
 
         @keyframes titleFade {
@@ -271,7 +288,7 @@
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
+    <div class="particles" id="particles"></div>
     
     <nav class="navbar">
         <div class="social-icons">
@@ -313,5 +330,25 @@
             <a href="/contact" class="cta-button secondary-cta">Get in Touch</a>
         </div>
     </div>
+
+    <script>
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 8 + 4}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+    </script>
 </body>
 </html>
