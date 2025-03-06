@@ -53,19 +53,14 @@
     .header p {
         font-size: 1.2rem;
         opacity: 0;
-        animation: fadeIn 1s ease-out forwards;
+        animation: fadeIn 2s ease-out forwards;
         animation-delay: 0.5s;
     }
-
-    .profile-info {
-        max-width: 800px;
-        margin: 3rem auto;
-        padding: 2rem;
-        text-align: center;
+    .header a {
         font-size: 1.2rem;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        opacity: 0;
+        animation: fadeIn 2s ease-out forwards;
+        animation-delay: 1s;
     }
 
     .skills-section {
@@ -73,7 +68,7 @@
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 2rem;
         padding: 2rem;
-        max-width: 1200px;
+        max-width: auto;
         margin: 0 auto;
     }
 
@@ -110,20 +105,15 @@
         cursor: pointer;
         transition: all 0.3s ease;
         display: flex;
+        flex-wrap: wrap; 
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start; 
+        gap: 0.5rem; 
     }
 
     .skill-list li:hover {
         background-color: rgba(52, 152, 219, 0.1);
         padding-left: 1.2rem;
-    }
-
-    .project-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin: 1rem 0;
     }
 
     .tag {
@@ -132,6 +122,7 @@
         font-size: 0.9rem;
         background-color: #e0e0e0;
         transition: all 0.3s ease;
+        white-space: nowrap; 
     }
 
     .tag:hover {
@@ -140,8 +131,18 @@
         transform: scale(1.05);
     }
 
+
+    .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+
+
+
     .projects-section {
-        max-width: 1200px;
+        max-width: 1900px;
         margin: 2rem auto;
         padding: 2rem;
     }
@@ -262,6 +263,7 @@
         .project-info {
             text-align: center;
         }
+
     }
 
     .github-button {
@@ -294,34 +296,153 @@
         transform: translateY(1px);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
+
+    .skill-list li i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+        color: var(--secondary-color);
+    }
+    .resume-button {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.8rem 1.8rem;
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .resume-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .resume-button i {
+        margin-right: 0.5rem;
+    }
+
+    .experience-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        max-width: auto;
+        margin: 0 auto;
+    }
+
+    .experience-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--secondary-color);
+    }
+
+    .experience-card h3 {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .job, .achievement {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .job:last-child, .achievement:last-child {
+        border-bottom: none;
+    }
+
+    .job h4, .achievement h4 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .date {
+        color: var(--secondary-color);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Ralph King</h1>
         <p>Full Stack Developer</p>
-        <p>📍 Leicestershire, UK | 👨‍💻 16 years old</p>
+        <p>Leicestershire, UK | 16 years old</p>
+        <p>ralphaking09@gmail.com | +44 7484 631926</p>
+        <a href="./static/projects/resume.pdf" download class="resume-button">
+            <i class="fas fa-download"></i> Download Resume
+        </a>
     </div>
 
-    <div class="profile-info">
-        <p>Passionate full-stack developer with expertise in modern web technologies, desktop applications, games, optimisation and cloud solutions.</p>
+    <div class="experience-section">
+        <div class="experience-card">
+            <h3><i class="fas fa-briefcase"></i> Professional Experience</h3>
+            <div class="job">
+                <h4>Calver/Chef - Shires Inn</h4>
+                <p class="date">Current Position</p>
+                <p>Preparing and serving meals while maintaining high quality standards and food safety protocols.</p>
+            </div>
+            <div class="job">
+                <h4>Founder & CEO - RKing Industries</h4>
+                <p class="date">Current Position</p>
+                <p>Leading software development projects and managing client relationships.</p>
+            </div>
+            <div class="job">
+                <h4>Pot Washer - Shires Inn</h4>
+                <p>Previous Position</p>
+                <p>Maintained kitchen cleanliness and supported food service operations.</p>
+            </div>
+        </div>
+    
+        <div class="experience-card">
+            <h3><i class="fas fa-trophy"></i> Achievements</h3>
+            <div class="achievement">
+                <h4>Arkwright Engineering Scholarship</h4>
+                <p>Prestigious award recognizing exceptional engineering potential.</p>
+            </div>
+            <div class="achievement">
+                <h4>Rotary Technology Tournament Winner</h4>
+                <p>First place in a competitive technology challenge by demonstrating strong teamwork and collaboration skills.</p>
+            </div>
+            <div class="achievement">
+                <h4>Duke of Edinburgh Silver</h4>
+                <p>Completed challenging expedition and skill development program.</p>
+            </div>
+            <div class="achievement">
+                <h4>Duke of Edinburgh Bronze</h4>
+                <p>Successfully completed foundational level of the DofE award scheme.</p>
+            </div>
+        </div>
     </div>
+    
 
     <div class="skills-section">
         <div class="skill-card">
             <h3><i class="fas fa-code"></i> Programming Languages</h3>
             <ul class="skill-list">
                 <li onclick="filterAndScroll('python')">
-                    Python <span class="tag">Web</span> <span class="tag">Backend</span> 
+                    <i class="fab fa-python"></i> Python <span class="tag">Web</span> <span class="tag">Backend</span> 
                 </li>
                 <li onclick="filterAndScroll('c++')">
-                    C++ <span class="tag">Systems</span> <span class="tag">Game</span>
+                    <i class="fas fa-code"></i> C++ <span class="tag">Systems</span> <span class="tag">Game</span>
                 </li>
                 <li onclick="filterAndScroll('ruby')">
-                    Ruby <span class="tag">Web</span> <span class="tag">Backend</span>
+                    <i class="fas fa-gem"></i> Ruby <span class="tag">Web</span> <span class="tag">Backend</span>
                 </li>
                 <li onclick="filterAndScroll('html/css/javascript')">
-                    HTML/CSS/JavaScript <span class="tag">Frontend</span>
+                    <i class="fab fa-js"></i> HTML/CSS/JavaScript <span class="tag">Frontend</span>
                 </li>
             </ul>
         </div>
@@ -330,11 +451,11 @@
             <h3><i class="fas fa-layer-group"></i> Frameworks</h3>
             <ul class="skill-list">
                 <li onclick="filterAndScroll('flask')">
-                    Flask <span class="tag">Python</span> <span class="tag">Backend</span>
+                    <i class="fab fa-python"></i> Flask <span class="tag">Python</span> <span class="tag">Backend</span>
                 </li>
                 <li onclick="filterAndScroll('react')">
-                    React <span class="tag">JavaScript</span> <span class="tag">Frontend</span>
-                </li>
+                    <i class="fab fa-react"></i> React <span class="tag">JavaScript</span> <span class="tag">Frontend</span>
+                </li>                
             </ul>
         </div>
 
@@ -342,13 +463,13 @@
             <h3><i class="fas fa-database"></i> Databases</h3>
             <ul class="skill-list">
                 <li onclick="filterAndScroll('mysql')">
-                    MySQL <span class="tag">Relational</span>
+                    <i class="fas fa-database"></i> MySQL <span class="tag">Relational</span>
                 </li>
                 <li onclick="filterAndScroll('mongodb')">
-                    MongoDB <span class="tag">NoSQL</span>
+                    <i class="fas fa-leaf"></i> MongoDB <span class="tag">NoSQL</span>
                 </li>
                 <li onclick="filterAndScroll('sqllite')">
-                    SQLite <span class="tag">Relational</span>
+                    <i class="fas fa-database"></i> SQLite <span class="tag">Relational</span>
                 </li>
             </ul>
         </div>
@@ -357,23 +478,22 @@
             <h3><i class="fas fa-tools"></i> Tools</h3>
             <ul class="skill-list">
                 <li onclick="filterAndScroll('git')">
-                    Git <span class="tag">Version Control</span>
+                    <i class="fab fa-git-alt"></i> Git <span class="tag">Version Control</span>
                 </li>
                 <li onclick="filterAndScroll('docker')">
-                    Docker <span class="tag">Containerization</span>
+                    <i class="fab fa-docker"></i> Docker <span class="tag">Containerization</span>
                 </li>
                 <li onclick="filterAndScroll('aws')">
-                    AWS <span class="tag">Cloud</span>
+                    <i class="fab fa-aws"></i> AWS <span class="tag">Cloud</span>
                 </li>
                 <li onclick="filterAndScroll('googleservices')">
-                    Google Services <span class="tag">Cloud</span>
+                    <i class="fab fa-google"></i> Google Services <span class="tag">Cloud</span>
                 </li>
             </ul>
         </div>
     </div>
 
     <div class="projects-section" id="projects">
-        <h2>My Projects</h2>
         
         <div class="filter-tags">
             <button class="filter-tag active" data-tag="all">All</button>
@@ -580,6 +700,26 @@
                 </div>
             </div>
 
+            <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices,mysql,sqllite">
+                <img class="project-image" src="./static/projects/fasthive.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">FastHive</h3>
+                    <p>A Faster version of my schools educational website, by chaching requests and serving from db insted of constant api requests.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">Google Services</span>
+                        <span class="tag">MySQL</span>
+                        <span class="tag">SQLite</span>
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/RKing-Industries-Website" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
 
 
 
@@ -699,6 +839,21 @@
             </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillItems = document.querySelectorAll('.skill-list li');
+            
+            skillItems.forEach(item => {
+                const skillName = item.getAttribute('onclick').match(/filterAndScroll\('(.+?)'\)/)[1];
+                const projectCount = document.querySelectorAll(`.project-card[data-tags*="${skillName}"]`).length;
+                
+                const icon = item.querySelector('i').outerHTML;
+                const skillText = item.textContent.trim();
+                const tags = Array.from(item.querySelectorAll('.tag')).map(tag => tag.outerHTML).join(' ');
+                
+                item.innerHTML = `${icon} ${skillText.split('(')[0]} (${projectCount}) ${tags}`;
+            });
+        });
+
         function filterAndScroll(tag) {
             document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
             
@@ -748,6 +903,8 @@
             once: true,
             offset: 100
         });
+
+        
     </script>
 </body>
 </html>
