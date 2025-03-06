@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/logo.png" type="image/icon type">
+    <title>Ralph King - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --text-color: #2c3e50;
+        --background-color: #f5f6fa;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
+    .header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 4rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        background: linear-gradient(to right bottom, transparent 49%, var(--background-color) 50%);
+    }
+
+    .header h1 {
+        font-size: 3.5rem;
+        margin-bottom: 0.5rem;
+        animation: slideDown 1s ease-out;
+    }
+
+    .header p {
+        font-size: 1.2rem;
+        opacity: 0;
+        animation: fadeIn 1s ease-out forwards;
+        animation-delay: 0.5s;
+    }
+
+    .profile-info {
+        max-width: 800px;
+        margin: 3rem auto;
+        padding: 2rem;
+        text-align: center;
+        font-size: 1.2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .skills-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .skill-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-left: 4px solid var(--secondary-color);
+    }
+
+    .skill-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .skill-card h3 {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .skill-card h3 i {
+        font-size: 1.5rem;
+    }
+
+    .skill-list li {
+        margin: 0.8rem 0;
+        padding: 0.8rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .skill-list li:hover {
+        background-color: rgba(52, 152, 219, 0.1);
+        padding-left: 1.2rem;
+    }
+
+    .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+
+    .tag {
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        background-color: #e0e0e0;
+        transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+        background-color: var(--secondary-color);
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .projects-section {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+
+    .project-card {
+        display: flex;
+        background: white;
+        border-radius: 15px;
+        margin: 2rem 0;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .project-card.visible {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .project-card.hidden {
+        display: none;
+    }
+
+    .project-image {
+        width: 400px;
+        height: auto;
+        object-fit: cover;
+        border-radius: 15px 0 0 15px;
+        transition: transform 0.3s ease;
+    }
+
+    .project-image:hover {
+        transform: scale(1.05);
+    }
+
+    .project-info {
+        padding: 2rem;
+        flex: 1;
+    }
+
+    .project-title {
+        color: var(--primary-color);
+        margin: 0 0 1rem 0;
+        font-size: 1.5rem;
+    }
+
+    .filter-tags {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .filter-tag {
+        display: inline-block;
+        margin: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        background: var(--secondary-color);
+        color: white;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-weight: 500;
+    }
+
+    .filter-tag:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .filter-tag.active {
+        background: var(--primary-color);
+        transform: scale(1.05);
+    }
+
+    .projects-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+        .project-card {
+            flex-direction: column;
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .project-info {
+            padding: 1.5rem;
+        }
+        
+        .project-info {
+            text-align: center;
+        }
+    }
+
+    .github-button {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.8rem 1.8rem;
+        background: linear-gradient(135deg, #333, #555);
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .github-button i {
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .github-button:hover {
+        background: linear-gradient(135deg, #555, #777);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .github-button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Ralph King</h1>
+        <p>Full Stack Developer</p>
+        <p>📍 Leicestershire, UK | 👨‍💻 16 years old</p>
+    </div>
+
+    <div class="profile-info">
+        <p>Passionate full-stack developer with expertise in modern web technologies, desktop applications, games, optimisation and cloud solutions.</p>
+    </div>
+
+    <div class="skills-section">
+        <div class="skill-card">
+            <h3><i class="fas fa-code"></i> Programming Languages</h3>
+            <ul class="skill-list">
+                <li onclick="filterAndScroll('python')">
+                    Python <span class="tag">Web</span> <span class="tag">Backend</span> 
+                </li>
+                <li onclick="filterAndScroll('c++')">
+                    C++ <span class="tag">Systems</span> <span class="tag">Game</span>
+                </li>
+                <li onclick="filterAndScroll('ruby')">
+                    Ruby <span class="tag">Web</span> <span class="tag">Backend</span>
+                </li>
+                <li onclick="filterAndScroll('html/css/javascript')">
+                    HTML/CSS/JavaScript <span class="tag">Frontend</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h3><i class="fas fa-layer-group"></i> Frameworks</h3>
+            <ul class="skill-list">
+                <li onclick="filterAndScroll('flask')">
+                    Flask <span class="tag">Python</span> <span class="tag">Backend</span>
+                </li>
+                <li onclick="filterAndScroll('react')">
+                    React <span class="tag">JavaScript</span> <span class="tag">Frontend</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h3><i class="fas fa-database"></i> Databases</h3>
+            <ul class="skill-list">
+                <li onclick="filterAndScroll('mysql')">
+                    MySQL <span class="tag">Relational</span>
+                </li>
+                <li onclick="filterAndScroll('mongodb')">
+                    MongoDB <span class="tag">NoSQL</span>
+                </li>
+                <li onclick="filterAndScroll('sqllite')">
+                    SQLite <span class="tag">Relational</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h3><i class="fas fa-tools"></i> Tools</h3>
+            <ul class="skill-list">
+                <li onclick="filterAndScroll('git')">
+                    Git <span class="tag">Version Control</span>
+                </li>
+                <li onclick="filterAndScroll('docker')">
+                    Docker <span class="tag">Containerization</span>
+                </li>
+                <li onclick="filterAndScroll('aws')">
+                    AWS <span class="tag">Cloud</span>
+                </li>
+                <li onclick="filterAndScroll('googleservices')">
+                    Google Services <span class="tag">Cloud</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="projects-section" id="projects">
+        <h2>My Projects</h2>
+        
+        <div class="filter-tags">
+            <button class="filter-tag active" data-tag="all">All</button>
+            <button class="filter-tag" data-tag="python">Python</button>
+            <button class="filter-tag" data-tag="c++">C++</button>
+            <button class="filter-tag" data-tag="ruby">Ruby</button>
+            <button class="filter-tag" data-tag="html/css/javascript">HTML/CSS/JavaScript</button>
+            <button class="filter-tag" data-tag="react">React</button>
+            <button class="filter-tag" data-tag="flask">Flask</button>
+            <button class="filter-tag" data-tag="mysql">MySQL</button>
+            <button class="filter-tag" data-tag="sqllite">SQLite</button>
+            <button class="filter-tag" data-tag="mongodb">MongoDB</button>
+            <button class="filter-tag" data-tag="git">Git</button>
+            <button class="filter-tag" data-tag="docker">Docker</button>
+            <button class="filter-tag" data-tag="aws">AWS</button>
+            <button class="filter-tag" data-tag="googleservices">Google Services</button>
+        </div>
+    
+        <div class="projects-container">
+
+
+            <div class="project-card" data-tags="c++">
+                <img class="project-image" src="./static/projects/gameengine.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">3D Game Engin</h3>
+                    <p>A 3D game engine written in C++, focused on optimization and achieving the lowest possible frame times for maximum performance.</p>
+                    <div class="project-tags">
+                        <span class="tag">C++</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/3D-Game-Engin-in-Cpp-Test" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="project-card" data-tags="c++">
+                <img class="project-image" src="./static/projects/2dgame.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">2D Game Engin</h3>
+                    <p>A 2D game engine written in C++, so I could improve my skils using C++.</p>
+                    <div class="project-tags">
+                        <span class="tag">C++</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/2D-in-Cpp-test" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="c++">
+                <img class="project-image" src="./static/projects/network.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Network Protocol</h3>
+                    <p>A Network Protocol written in C++ to improve my knolage of how networking and packets work.</p>
+                    <div class="project-tags">
+                        <span class="tag">C++</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Network-Protocol-" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+            
+            <div class="project-card" data-tags="c++">
+                <img class="project-image" src="./static/projects/cppide.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">C++ IDE</h3>
+                    <p>An IDE written in C++ using the windows api, to improve my knolage of the windows api.</p>
+                    <div class="project-tags">
+                        <span class="tag">C++</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/IDE-Cpp" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="project-card" data-tags="python,html/css/javascript,flask">
+                <img class="project-image" src="./static/projects/port.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Portfolio</h3>
+                    <p>A portfolio, wiritten in HTML with python backend using the Flask framework.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Portfolio" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices,mysql,sqllite">
+                <img class="project-image" src="./static/projects/rki.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">RKing Industries</h3>
+                    <p>My RKing Industries website, written with a python backend using the Flask framework.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">Google Services</span>
+                        <span class="tag">MySQL</span>
+                        <span class="tag">SQLite</span>
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/RKing-Industries-Website" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python,html/css/javascript,flask,sqllite">
+                <img class="project-image" src="./static/projects/whiteb.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Whiteboard</h3>
+                    <p>A whiteboard, wiritten in HTML with python backend using the Flask framework.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">SQLite</span>
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Whiteboard-" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices">
+                <img class="project-image" src="./static/projects/mess.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Mesaging Application</h3>
+                    <p>A messaging aplication like twitter or reddit, wiritten in HTML with python backend using the Flask framework.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">Google Services</span>
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Messaging-application" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python,html/css/javascript,flask">
+                <img class="project-image" src="./static/projects/darts.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Darts Game</h3>
+                    <p>A darts game to track scores, wiritten in HTML with python backend using the Flask framework.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Darts-tracker" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python,html/css/javascript,flask,sqllite">
+                <img class="project-image" src="./static/projects/fwm.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Website Maker</h3>
+                    <p>A website maker allowing admins to login and edit or create pages, wiritten in HTML with python backend using the Flask framework.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">SQLite</span>
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Flask-website-maker" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb">
+                <img class="project-image" src="./static/projects/tt.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Test Tracking</h3>
+                    <p>A test tracking program for monitoring student tests and grades, wiritten in HTML with python backend using the Flask framework.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">HTML/CSS/JavaScript</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Test-tracking" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="project-card" data-tags="python,sqllite">
+                <img class="project-image" src="./static/projects/bs.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Browser Sessions</h3>
+                    <p>A Browser Sessions app that allows the creation of browsers sessions that have auo pinned tabs and credentials saved.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">SQLite</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Browser-sessions" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python">
+                <img class="project-image" src="./static/projects/ollam.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Ollama Interface</h3>
+                    <p>An interface written for Ollama allowing easier use of Ollama inside a GUI.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Ollama-Interface-" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+            
+            <div class="project-card" data-tags="python,git">
+                <img class="project-image" src="./static/projects/lt.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Linux Terminal</h3>
+                    <p>A Linux Terminal look and commands witten for windows.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Linux-Terminal" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python">
+                <img class="project-image" src="./static/projects/ptp.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">PTP chat</h3>
+                    <p>An encrypted PTP chat written in python.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/ptp-chat" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python">
+                <img class="project-image" src="./static/projects/ide.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">IDE</h3>
+                    <p>An fast lightweight IDE written in python.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/IDE" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python">
+                <img class="project-image" src="./static/projects/astar.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">A*</h3>
+                    <p>The A* algorithm with a gui written in python.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Astar" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="python">
+                <img class="project-image" src="./static/projects/.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Ball Tracking</h3>
+                    <p>Rugby ball tracking program for live ball tracking or video tracking.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Ball-tracking" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="ruby">
+                <img class="project-image" src="./static/projects/mm.png" alt="Task Management System">
+                <div class="project-info">
+                    <h3 class="project-title">Mastermind</h3>
+                    <p>Mastermind game written in ruby.</p>
+                    <div class="project-tags">
+                        <span class="tag">Ruby</span>
+                    </div>
+                    <a href="https://github.com/RalphAKing/Mastermind" target="_blank" class="github-button">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+
+    <script>
+        function filterAndScroll(tag) {
+            document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+            
+            const filterButtons = document.querySelectorAll('.filter-tag');
+            filterButtons.forEach(btn => {
+                if (btn.dataset.tag === tag) {
+                    btn.classList.add('active');
+                    btn.click();
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterTags = document.querySelectorAll('.filter-tag');
+            const projects = document.querySelectorAll('.project-card');
+
+            function filterProjects(tag) {
+                projects.forEach(project => {
+                    const projectTags = project.dataset.tags.split(',');
+                    if (tag === 'all' || projectTags.includes(tag)) {
+                        project.classList.remove('hidden');
+                        project.classList.add('visible');
+                    } else {
+                        project.classList.remove('visible');
+                        project.classList.add('hidden');
+                    }
+                });
+            }
+
+            filterTags.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterTags.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    filterProjects(button.dataset.tag);
+                });
+            });
+
+            filterProjects('all');
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+    </script>
+</body>
+</html>

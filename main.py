@@ -1761,6 +1761,11 @@ def post_answer(question_id):
     )
     return redirect('/forums')
 
+@app.route('/portfolio')
+@cache.memoize(timeout=600)
+def portfolio():
+    return render_template('portfolio.html')
+
 
 @app.route('/cloudstorage')
 @cache.memoize(timeout=60)
