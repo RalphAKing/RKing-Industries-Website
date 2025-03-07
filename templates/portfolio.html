@@ -372,6 +372,41 @@
         margin-bottom: 0.5rem;
     }
 
+    .tab-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .tab-button {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        background: var(--secondary-color);
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .tab-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .tab-button.active {
+        background: var(--primary-color);
+    }
+
+    .tab-panel {
+        display: none;
+    }
+
+    .tab-panel.active {
+        display: block;
+    }
+
 
     </style>
 </head>
@@ -426,417 +461,567 @@
             </div>
         </div>
     </div>
-    
 
-    <div class="skills-section">
-        <div class="skill-card">
-            <h3><i class="fas fa-code"></i> Programming Languages</h3>
-            <ul class="skill-list">
-                <li onclick="filterAndScroll('python')">
-                    <i class="fab fa-python"></i> Python <span class="tag">Web</span> <span class="tag">Backend</span> 
-                </li>
-                <li onclick="filterAndScroll('c++')">
-                    <i class="fas fa-code"></i> C++ <span class="tag">Systems</span> <span class="tag">Game</span>
-                </li>
-                <li onclick="filterAndScroll('ruby')">
-                    <i class="fas fa-gem"></i> Ruby <span class="tag">Web</span> <span class="tag">Backend</span>
-                </li>
-                <li onclick="filterAndScroll('html/css/javascript')">
-                    <i class="fab fa-js"></i> HTML/CSS/JavaScript <span class="tag">Frontend</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="skill-card">
-            <h3><i class="fas fa-layer-group"></i> Frameworks</h3>
-            <ul class="skill-list">
-                <li onclick="filterAndScroll('flask')">
-                    <i class="fab fa-python"></i> Flask <span class="tag">Python</span> <span class="tag">Backend</span>
-                </li>
-                <li onclick="filterAndScroll('react')">
-                    <i class="fab fa-react"></i> React <span class="tag">JavaScript</span> <span class="tag">Frontend</span>
-                </li>                
-            </ul>
-        </div>
-
-        <div class="skill-card">
-            <h3><i class="fas fa-database"></i> Databases</h3>
-            <ul class="skill-list">
-                <li onclick="filterAndScroll('mysql')">
-                    <i class="fas fa-database"></i> MySQL <span class="tag">Relational</span>
-                </li>
-                <li onclick="filterAndScroll('mongodb')">
-                    <i class="fas fa-leaf"></i> MongoDB <span class="tag">NoSQL</span>
-                </li>
-                <li onclick="filterAndScroll('sqllite')">
-                    <i class="fas fa-database"></i> SQLite <span class="tag">Relational</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="skill-card">
-            <h3><i class="fas fa-tools"></i> Tools</h3>
-            <ul class="skill-list">
-                <li onclick="filterAndScroll('git')">
-                    <i class="fab fa-git-alt"></i> Git <span class="tag">Version Control</span>
-                </li>
-                <li onclick="filterAndScroll('docker')">
-                    <i class="fab fa-docker"></i> Docker <span class="tag">Containerization</span>
-                </li>
-                <li onclick="filterAndScroll('aws')">
-                    <i class="fab fa-aws"></i> AWS <span class="tag">Cloud</span>
-                </li>
-                <li onclick="filterAndScroll('googleservices')">
-                    <i class="fab fa-google"></i> Google Services <span class="tag">Cloud</span>
-                </li>
-            </ul>
-        </div>
+    <div class="tab-buttons">
+        <button class="tab-button active" data-tab="programming">Programming</button>
+        <button class="tab-button" data-tab="engineering">Engineering</button>
     </div>
 
-    <div class="projects-section" id="projects">
-        
-        <div class="filter-tags">
-            <button class="filter-tag active" data-tag="all">All</button>
-            <button class="filter-tag" data-tag="python">Python</button>
-            <button class="filter-tag" data-tag="c++">C++</button>
-            <button class="filter-tag" data-tag="ruby">Ruby</button>
-            <button class="filter-tag" data-tag="html/css/javascript">HTML/CSS/JavaScript</button>
-            <button class="filter-tag" data-tag="react">React</button>
-            <button class="filter-tag" data-tag="flask">Flask</button>
-            <button class="filter-tag" data-tag="mysql">MySQL</button>
-            <button class="filter-tag" data-tag="sqllite">SQLite</button>
-            <button class="filter-tag" data-tag="mongodb">MongoDB</button>
-            <button class="filter-tag" data-tag="git">Git</button>
-            <button class="filter-tag" data-tag="docker">Docker</button>
-            <button class="filter-tag" data-tag="aws">AWS</button>
-            <button class="filter-tag" data-tag="googleservices">Google Services</button>
-        </div>
+    <div class="tab-content">
+        <div id="programming" class="tab-panel active">
     
-        <div class="projects-container">
 
+            <div class="skills-section">
+                <div class="skill-card">
+                    <h3><i class="fas fa-code"></i> Programming Languages</h3>
+                    <ul class="skill-list">
+                        <li onclick="filterAndScroll('python')">
+                            <i class="fab fa-python"></i> Python <span class="tag">Web</span> <span class="tag">Backend</span> 
+                        </li>
+                        <li onclick="filterAndScroll('c++')">
+                            <i class="fas fa-code"></i> C++ <span class="tag">Systems</span> <span class="tag">Game</span>
+                        </li>
+                        <li onclick="filterAndScroll('ruby')">
+                            <i class="fas fa-gem"></i> Ruby <span class="tag">Web</span> <span class="tag">Backend</span>
+                        </li>
+                        <li onclick="filterAndScroll('html/css/javascript')">
+                            <i class="fab fa-js"></i> HTML/CSS/JavaScript <span class="tag">Frontend</span>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="project-card" data-tags="c++">
-                <img class="project-image" src="./static/projects/gameengine.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">3D Game Engin</h3>
-                    <p>A 3D game engine written in C++, focused on optimization and achieving the lowest possible frame times for maximum performance.</p>
-                    <div class="project-tags">
-                        <span class="tag">C++</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/3D-Game-Engin-in-Cpp-Test" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
+                <div class="skill-card">
+                    <h3><i class="fas fa-layer-group"></i> Frameworks</h3>
+                    <ul class="skill-list">
+                        <li onclick="filterAndScroll('flask')">
+                            <i class="fab fa-python"></i> Flask <span class="tag">Python</span> <span class="tag">Backend</span>
+                        </li>
+                        <li onclick="filterAndScroll('react')">
+                            <i class="fab fa-react"></i> React <span class="tag">JavaScript</span> <span class="tag">Frontend</span>
+                        </li>                
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <h3><i class="fas fa-database"></i> Databases</h3>
+                    <ul class="skill-list">
+                        <li onclick="filterAndScroll('mysql')">
+                            <i class="fas fa-database"></i> MySQL <span class="tag">Relational</span>
+                        </li>
+                        <li onclick="filterAndScroll('mongodb')">
+                            <i class="fas fa-leaf"></i> MongoDB <span class="tag">NoSQL</span>
+                        </li>
+                        <li onclick="filterAndScroll('sqllite')">
+                            <i class="fas fa-database"></i> SQLite <span class="tag">Relational</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <h3><i class="fas fa-tools"></i> Tools</h3>
+                    <ul class="skill-list">
+                        <li onclick="filterAndScroll('git')">
+                            <i class="fab fa-git-alt"></i> Git <span class="tag">Version Control</span>
+                        </li>
+                        <li onclick="filterAndScroll('docker')">
+                            <i class="fab fa-docker"></i> Docker <span class="tag">Containerization</span>
+                        </li>
+                        <li onclick="filterAndScroll('aws')">
+                            <i class="fab fa-aws"></i> AWS <span class="tag">Cloud</span>
+                        </li>
+                        <li onclick="filterAndScroll('googleservices')">
+                            <i class="fab fa-google"></i> Google Services <span class="tag">Cloud</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-
-            <div class="project-card" data-tags="c++">
-                <img class="project-image" src="./static/projects/2dgame.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">2D Game Engin</h3>
-                    <p>A 2D game engine written in C++, so I could improve my skils using C++.</p>
-                    <div class="project-tags">
-                        <span class="tag">C++</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/2D-in-Cpp-test" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
+            <div class="projects-section" id="projects">
+                
+                <div class="filter-tags">
+                    <button class="filter-tag active" data-tag="all">All</button>
+                    <button class="filter-tag" data-tag="python">Python</button>
+                    <button class="filter-tag" data-tag="c++">C++</button>
+                    <button class="filter-tag" data-tag="ruby">Ruby</button>
+                    <button class="filter-tag" data-tag="html/css/javascript">HTML/CSS/JavaScript</button>
+                    <button class="filter-tag" data-tag="react">React</button>
+                    <button class="filter-tag" data-tag="flask">Flask</button>
+                    <button class="filter-tag" data-tag="mysql">MySQL</button>
+                    <button class="filter-tag" data-tag="sqllite">SQLite</button>
+                    <button class="filter-tag" data-tag="mongodb">MongoDB</button>
+                    <button class="filter-tag" data-tag="git">Git</button>
+                    <button class="filter-tag" data-tag="docker">Docker</button>
+                    <button class="filter-tag" data-tag="aws">AWS</button>
+                    <button class="filter-tag" data-tag="googleservices">Google Services</button>
                 </div>
-            </div>
-
-            <div class="project-card" data-tags="c++">
-                <img class="project-image" src="./static/projects/network.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Network Protocol</h3>
-                    <p>A Network Protocol written in C++ to improve my knolage of how networking and packets work.</p>
-                    <div class="project-tags">
-                        <span class="tag">C++</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Network-Protocol-" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
             
-            <div class="project-card" data-tags="c++">
-                <img class="project-image" src="./static/projects/cppide.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">C++ IDE</h3>
-                    <p>An IDE written in C++ using the windows api, to improve my knolage of the windows api.</p>
-                    <div class="project-tags">
-                        <span class="tag">C++</span>
+                <div class="projects-container">
+
+
+                    <div class="project-card" data-tags="c++">
+                        <img class="project-image" src="./static/projects/gameengine.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">3D Game Engin</h3>
+                            <p>A 3D game engine written in C++, focused on optimization and achieving the lowest possible frame times for maximum performance.</p>
+                            <div class="project-tags">
+                                <span class="tag">C++</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/3D-Game-Engin-in-Cpp-Test" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
                     </div>
-                    <a href="https://github.com/RalphAKing/IDE-Cpp" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
+
+
+                    <div class="project-card" data-tags="c++">
+                        <img class="project-image" src="./static/projects/2dgame.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">2D Game Engin</h3>
+                            <p>A 2D game engine written in C++, so I could improve my skils using C++.</p>
+                            <div class="project-tags">
+                                <span class="tag">C++</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/2D-in-Cpp-test" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="c++">
+                        <img class="project-image" src="./static/projects/network.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Network Protocol</h3>
+                            <p>A Network Protocol written in C++ to improve my knolage of how networking and packets work.</p>
+                            <div class="project-tags">
+                                <span class="tag">C++</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Network-Protocol-" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card" data-tags="c++">
+                        <img class="project-image" src="./static/projects/cppide.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">C++ IDE</h3>
+                            <p>An IDE written in C++ using the windows api, to improve my knolage of the windows api.</p>
+                            <div class="project-tags">
+                                <span class="tag">C++</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/IDE-Cpp" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="project-card" data-tags="python,html/css/javascript,flask">
+                        <img class="project-image" src="./static/projects/port.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Portfolio</h3>
+                            <p>A portfolio, wiritten in HTML with python backend using the Flask framework.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">HTML/CSS/JavaScript</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Portfolio" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices,mysql,sqllite">
+                        <img class="project-image" src="./static/projects/rki.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">RKing Industries</h3>
+                            <p>My RKing Industries website, written with a python backend using the Flask framework.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">Google Services</span>
+                                <span class="tag">MySQL</span>
+                                <span class="tag">SQLite</span>
+                                <span class="tag">HTML/CSS/JavaScript</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/RKing-Industries-Website" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python,html/css/javascript,flask,sqllite">
+                        <img class="project-image" src="./static/projects/whiteb.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Whiteboard</h3>
+                            <p>A whiteboard, wiritten in HTML with python backend using the Flask framework.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">SQLite</span>
+                                <span class="tag">HTML/CSS/JavaScript</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Whiteboard-" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices">
+                        <img class="project-image" src="./static/projects/mess.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Mesaging Application</h3>
+                            <p>A messaging aplication like twitter or reddit, wiritten in HTML with python backend using the Flask framework.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">Google Services</span>
+                                <span class="tag">HTML/CSS/JavaScript</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Messaging-application" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python,html/css/javascript,flask">
+                        <img class="project-image" src="./static/projects/darts.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Darts Game</h3>
+                            <p>A darts game to track scores, wiritten in HTML with python backend using the Flask framework.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">HTML/CSS/JavaScript</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Darts-tracker" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python,html/css/javascript,flask,sqllite">
+                        <img class="project-image" src="./static/projects/fwm.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Website Maker</h3>
+                            <p>A website maker allowing admins to login and edit or create pages, wiritten in HTML with python backend using the Flask framework.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">SQLite</span>
+                                <span class="tag">HTML/CSS/JavaScript</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Flask-website-maker" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb">
+                        <img class="project-image" src="./static/projects/tt.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Test Tracking</h3>
+                            <p>A test tracking program for monitoring student tests and grades, wiritten in HTML with python backend using the Flask framework.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">HTML/CSS/JavaScript</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Test-tracking" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices,mysql,sqllite">
+                        <img class="project-image" src="./static/projects/fasthive.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">FastHive</h3>
+                            <p>A Faster version of my schools educational website, by chaching requests and serving from db insted of constant api requests.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">Google Services</span>
+                                <span class="tag">MySQL</span>
+                                <span class="tag">SQLite</span>
+                                <span class="tag">HTML/CSS/JavaScript</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/RKing-Industries-Website" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <div class="project-card" data-tags="python,sqllite">
+                        <img class="project-image" src="./static/projects/bs.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Browser Sessions</h3>
+                            <p>A Browser Sessions app that allows the creation of browsers sessions that have auo pinned tabs and credentials saved.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">SQLite</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Browser-sessions" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python">
+                        <img class="project-image" src="./static/projects/ollam.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Ollama Interface</h3>
+                            <p>An interface written for Ollama allowing easier use of Ollama inside a GUI.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Ollama-Interface-" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card" data-tags="python,git">
+                        <img class="project-image" src="./static/projects/lt.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Linux Terminal</h3>
+                            <p>A Linux Terminal look and commands witten for windows.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Linux-Terminal" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python">
+                        <img class="project-image" src="./static/projects/ptp.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">PTP chat</h3>
+                            <p>An encrypted PTP chat written in python.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/ptp-chat" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python">
+                        <img class="project-image" src="./static/projects/ide.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">IDE</h3>
+                            <p>An fast lightweight IDE written in python.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/IDE" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python">
+                        <img class="project-image" src="./static/projects/astar.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">A*</h3>
+                            <p>The A* algorithm with a gui written in python.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Astar" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="python">
+                        <img class="project-image" src="./static/projects/.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Ball Tracking</h3>
+                            <p>Rugby ball tracking program for live ball tracking or video tracking.</p>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Ball-tracking" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="ruby">
+                        <img class="project-image" src="./static/projects/mm.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Mastermind</h3>
+                            <p>Mastermind game written in ruby.</p>
+                            <div class="project-tags">
+                                <span class="tag">Ruby</span>
+                            </div>
+                            <a href="https://github.com/RalphAKing/Mastermind" target="_blank" class="github-button">
+                                <i class="fab fa-github"></i> View on GitHub
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-            <div class="project-card" data-tags="python,html/css/javascript,flask">
-                <img class="project-image" src="./static/projects/port.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Portfolio</h3>
-                    <p>A portfolio, wiritten in HTML with python backend using the Flask framework.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">HTML/CSS/JavaScript</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Portfolio" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
+        </div>
+        
+        <div id="engineering" class="tab-panel">
+            <div class="skills-section">
+                <div class="skill-card">
+                    <h3><i class="fas fa-cogs"></i> CAD Design</h3>
+                    <ul class="skill-list">
+                        <li onclick="filterAndScroll('fusion360')">
+                            <i class="fas fa-cube"></i> Fusion 360 <span class="tag">3D Modeling</span> = <span class="tag">Simulation</span>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-
-            <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices,mysql,sqllite">
-                <img class="project-image" src="./static/projects/rki.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">RKing Industries</h3>
-                    <p>My RKing Industries website, written with a python backend using the Flask framework.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">MongoDB</span>
-                        <span class="tag">Google Services</span>
-                        <span class="tag">MySQL</span>
-                        <span class="tag">SQLite</span>
-                        <span class="tag">HTML/CSS/JavaScript</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/RKing-Industries-Website" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
+                <div class="skill-card">
+                    <h3><i class="fas fa-microchip"></i> Electronics & PCB</h3>
+                    <ul class="skill-list">
+                        <li onclick="filterAndScroll('pcb')">
+                            <i class="fas fa-microchip"></i> PCB Design <span class="tag">Circuit Design</span> <span class="tag">Layout</span>
+                        </li>
+                        <li onclick="filterAndScroll('kicad')">
+                            <i class="fas fa-microchip"></i> KiCad <span class="tag">EDA</span> <span class="tag">Schematic</span>
+                        </li>
+                        <li onclick="filterAndScroll('arduino')">
+                            <i class="fas fa-microchip"></i> Arduino <span class="tag">Prototyping</span> <span class="tag">IoT</span>
+                        </li>
+                        <li onclick="filterAndScroll('soldering')">
+                            <i class="fas fa-wrench"></i> Soldering <span class="tag">Assembly</span> <span class="tag">Rework</span>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-
-            <div class="project-card" data-tags="python,html/css/javascript,flask,sqllite">
-                <img class="project-image" src="./static/projects/whiteb.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Whiteboard</h3>
-                    <p>A whiteboard, wiritten in HTML with python backend using the Flask framework.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">SQLite</span>
-                        <span class="tag">HTML/CSS/JavaScript</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Whiteboard-" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
-
-            <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices">
-                <img class="project-image" src="./static/projects/mess.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Mesaging Application</h3>
-                    <p>A messaging aplication like twitter or reddit, wiritten in HTML with python backend using the Flask framework.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">MongoDB</span>
-                        <span class="tag">Google Services</span>
-                        <span class="tag">HTML/CSS/JavaScript</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Messaging-application" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
-
-            <div class="project-card" data-tags="python,html/css/javascript,flask">
-                <img class="project-image" src="./static/projects/darts.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Darts Game</h3>
-                    <p>A darts game to track scores, wiritten in HTML with python backend using the Flask framework.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">HTML/CSS/JavaScript</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Darts-tracker" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
-
-            <div class="project-card" data-tags="python,html/css/javascript,flask,sqllite">
-                <img class="project-image" src="./static/projects/fwm.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Website Maker</h3>
-                    <p>A website maker allowing admins to login and edit or create pages, wiritten in HTML with python backend using the Flask framework.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">SQLite</span>
-                        <span class="tag">HTML/CSS/JavaScript</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Flask-website-maker" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb">
-                <img class="project-image" src="./static/projects/tt.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Test Tracking</h3>
-                    <p>A test tracking program for monitoring student tests and grades, wiritten in HTML with python backend using the Flask framework.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">MongoDB</span>
-                        <span class="tag">HTML/CSS/JavaScript</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Test-tracking" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
-
-            <div class="project-card" data-tags="python,html/css/javascript,flask,mongodb,googleservices,mysql,sqllite">
-                <img class="project-image" src="./static/projects/fasthive.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">FastHive</h3>
-                    <p>A Faster version of my schools educational website, by chaching requests and serving from db insted of constant api requests.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">MongoDB</span>
-                        <span class="tag">Google Services</span>
-                        <span class="tag">MySQL</span>
-                        <span class="tag">SQLite</span>
-                        <span class="tag">HTML/CSS/JavaScript</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/RKing-Industries-Website" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
-
-
-
-
-
-
-            <div class="project-card" data-tags="python,sqllite">
-                <img class="project-image" src="./static/projects/bs.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Browser Sessions</h3>
-                    <p>A Browser Sessions app that allows the creation of browsers sessions that have auo pinned tabs and credentials saved.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">SQLite</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Browser-sessions" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
-
-            <div class="project-card" data-tags="python">
-                <img class="project-image" src="./static/projects/ollam.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Ollama Interface</h3>
-                    <p>An interface written for Ollama allowing easier use of Ollama inside a GUI.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Ollama-Interface-" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
             
-            <div class="project-card" data-tags="python,git">
-                <img class="project-image" src="./static/projects/lt.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Linux Terminal</h3>
-                    <p>A Linux Terminal look and commands witten for windows.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Linux-Terminal" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
+
+                <div class="skill-card">
+                    <h3><i class="fas fa-code"></i> Systems Programming</h3>
+                    <ul class="skill-list">
+                        <li onclick="filterAndScroll('c++')">
+                            <i class="fas fa-cogs"></i> C++ <span class="tag">STL</span> <span class="tag">Memory Management</span>
+                        </li>
+                        <li onclick="filterAndScroll('python')">
+                            <i class="fas fa-layer-group"></i> Python <span class="tag">Interface</span> <span class="tag">Backend</span>
+                        </li>
+                        <li onclick="filterAndScroll('networking')">
+                            <i class="fas fa-network-wired"></i> Network Programming <span class="tag">TCP/IP</span> <span class="tag">Sockets</span>
+                        </li>
+                        <li onclick="filterAndScroll('multithreading')">
+                            <i class="fas fa-layer-group"></i> Multithreading <span class="tag">Concurrency</span> <span class="tag">Async</span>
+                        </li>
+                        <li onclick="filterAndScroll('ai')">
+                            <i class="fas fa-brain"></i> AI <span class="tag">Machine Learning</span> <span class="tag">Neural Networks</span> <span class="tag">Computer Vision</span>
+                        </li>                        
+                    </ul>
                 </div>
             </div>
 
-            <div class="project-card" data-tags="python">
-                <img class="project-image" src="./static/projects/ptp.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">PTP chat</h3>
-                    <p>An encrypted PTP chat written in python.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
+
+            <div class="projects-section" id="projects">
+                
+                <div class="filter-tags">
+                    <button class="filter-tag active" data-tag="all">All</button>
+                    <button class="filter-tag" data-tag="fusion360">Fusion 360</button>
+                    <button class="filter-tag" data-tag="pcb">PCB Design</button>
+                    <button class="filter-tag" data-tag="kicad">KiCad</button>
+                    <button class="filter-tag" data-tag="arduino">Arduino</button>
+                    <button class="filter-tag" data-tag="soldering">Soldering</button>
+                    <button class="filter-tag" data-tag="c++">C++</button>
+                    <button class="filter-tag" data-tag="python">Python</button>
+                    <button class="filter-tag" data-tag="networking">Network Programming</button>
+                    <button class="filter-tag" data-tag="multithreading">Multithreading</button>
+                    <button class="filter-tag" data-tag="ai">AI</button>
+                </div>
+            
+                <div class="projects-container">
+
+
+                    <div class="project-card" data-tags="c++,fusion360,python,networking,pcb,kicad,arduino,soldering">
+                        <img class="project-image" src="./static/projects/vpd.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Vape Detectors</h3>
+                            <p>I designed a scalable and secure smart vape detection system with real-time monitoring, tamper alerts, customizable notifications, and data analytics, tailored for environments like schools and offices.</p>
+                            <div class="project-tags">
+                                <span class="tag">C++</span>
+                                <span class="tag">Fusion 360</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">Network Programming</span>
+                                <span class="tag">PCB Design</span>
+                                <span class="tag">KiCad</span>
+                                <span class="tag">Arduino</span>
+                                <span class="tag">Soldering</span>
+                            </div>
+                        </div>
                     </div>
-                    <a href="https://github.com/RalphAKing/ptp-chat" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
+
+                    <div class="project-card" data-tags="fusion360,python,ai">
+                        <img class="project-image" src="./static/projects/3dprinter.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">3D Printer</h3>
+                            <p>I designed a functional CoreXY 3D printer with AI-powered print failure detection as my first A-Level project.</p>
+                            <div class="project-tags">
+                                <span class="tag">Fusion 360</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">AI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-tags="c++,fusion360,pcb,arduino,soldering">
+                        <img class="project-image" src="./static/projects/.png" alt="Task Management System">
+                        <div class="project-info">
+                            <h3 class="project-title">Arcade Machine</h3>
+                            <p>I desighned an arcade machine for my GCSE DT project that worked and had a buikt in safe with keyboard password entry.</p>
+                            <div class="project-tags">
+                                <span class="tag">C++</span>
+                                <span class="tag">Fusion 360</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">PCB Design</span>
+                                <span class="tag">Arduino</span>
+                                <span class="tag">Soldering</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
                 </div>
             </div>
 
-            <div class="project-card" data-tags="python">
-                <img class="project-image" src="./static/projects/ide.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">IDE</h3>
-                    <p>An fast lightweight IDE written in python.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/IDE" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
 
-            <div class="project-card" data-tags="python">
-                <img class="project-image" src="./static/projects/astar.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">A*</h3>
-                    <p>The A* algorithm with a gui written in python.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Astar" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
 
-            <div class="project-card" data-tags="python">
-                <img class="project-image" src="./static/projects/.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Ball Tracking</h3>
-                    <p>Rugby ball tracking program for live ball tracking or video tracking.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Ball-tracking" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
+        </div>
+        
+        
+        
 
-            <div class="project-card" data-tags="ruby">
-                <img class="project-image" src="./static/projects/mm.png" alt="Task Management System">
-                <div class="project-info">
-                    <h3 class="project-title">Mastermind</h3>
-                    <p>Mastermind game written in ruby.</p>
-                    <div class="project-tags">
-                        <span class="tag">Ruby</span>
-                    </div>
-                    <a href="https://github.com/RalphAKing/Mastermind" target="_blank" class="github-button">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-            </div>
+
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -846,18 +1031,28 @@
                 const skillName = item.getAttribute('onclick').match(/filterAndScroll\('(.+?)'\)/)[1];
                 const projectCount = document.querySelectorAll(`.project-card[data-tags*="${skillName}"]`).length;
                 
-                const icon = item.querySelector('i').outerHTML;
-                const skillText = item.textContent.trim();
-                const tags = Array.from(item.querySelectorAll('.tag')).map(tag => tag.outerHTML).join(' ');
+                const icon = item.querySelector('i');
+                const tags = Array.from(item.querySelectorAll('.tag'));
+                const baseName = skillName.charAt(0).toUpperCase() + skillName.slice(1); 
                 
-                item.innerHTML = `${icon} ${skillText.split('(')[0]} (${projectCount}) ${tags}`;
+                item.innerHTML = '';
+                item.appendChild(icon.cloneNode(true));
+                item.appendChild(document.createTextNode(` ${baseName} (${projectCount}) `));
+                tags.forEach(tag => item.appendChild(tag.cloneNode(true)));
             });
         });
 
+
+
+
+
         function filterAndScroll(tag) {
-            document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+            const activeTab = document.querySelector('.tab-panel.active');
+            const projectsSection = activeTab.querySelector('.projects-section');
             
-            const filterButtons = document.querySelectorAll('.filter-tag');
+            projectsSection.scrollIntoView({ behavior: 'smooth' });
+            
+            const filterButtons = activeTab.querySelectorAll('.filter-tag');
             filterButtons.forEach(btn => {
                 if (btn.dataset.tag === tag) {
                     btn.classList.add('active');
@@ -867,6 +1062,7 @@
                 }
             });
         }
+
 
         document.addEventListener('DOMContentLoaded', function () {
             const filterTags = document.querySelectorAll('.filter-tag');
@@ -895,6 +1091,45 @@
 
             filterProjects('all');
         });
+
+
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+
+            function switchTab(tabId) {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabPanels.forEach(panel => panel.classList.remove('active'));
+
+                const button = document.querySelector(`[data-tab="${tabId}"]`);
+                button.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+
+                if (tabId === 'engineering') {
+                    history.pushState(null, '', '/portfolio#engineering');
+                } else {
+                    history.pushState(null, '', '/portfolio');
+                }
+            }
+
+            if (window.location.hash === '#engineering') {
+                switchTab('engineering');
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    switchTab(button.dataset.tab);
+                });
+            });
+
+            window.addEventListener('popstate', () => {
+                const tabId = window.location.hash === '#engineering' ? 'engineering' : 'programming';
+                switchTab(tabId);
+            });
+        });
+
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
