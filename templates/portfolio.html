@@ -1138,6 +1138,61 @@
             });
         });
 
+
+        
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            function updateURL(project = '', tag = '') {
+                const url = new URL(window.location);
+                if (project) url.searchParams.set('project', project);
+                else url.searchParams.delete('project');
+                
+                if (tag && tag !== 'all') url.searchParams.set('tag', tag);
+                else url.searchParams.delete('tag');
+                
+                window.history.pushState({}, '', url);
+            }
+
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const projectTitle = card.querySelector('.project-title').textContent;
+                    const activeTag = document.querySelector('.filter-tag.active').dataset.tag;
+                    updateURL(projectTitle, activeTag);
+                });
+            });
+
+            document.querySelectorAll('.filter-tag').forEach(button => {
+                button.addEventListener('click', () => {
+                    const tag = button.dataset.tag;
+                    const currentProject = new URLSearchParams(window.location.search).get('project');
+                    updateURL(currentProject, tag);
+                });
+            });
+
+            function handleInitialLoad() {
+                const params = new URLSearchParams(window.location.search);
+                const project = params.get('project');
+                const tag = params.get('tag');
+
+                if (tag) {
+                    const tagButton = document.querySelector(`.filter-tag[data-tag="${tag}"]`);
+                    if (tagButton) tagButton.click();
+                }
+
+                if (project) {
+                    const projectElement = Array.from(document.querySelectorAll('.project-title'))
+                        .find(el => el.textContent === project);
+                    if (projectElement) {
+                        projectElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            }
+
+            handleInitialLoad();
+        });
+
+
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
