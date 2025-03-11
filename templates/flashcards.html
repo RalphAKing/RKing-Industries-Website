@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flashcards</title>
+    <style>
+    :root {
+        --bg-color: #1a1a1a;
+        --text-color: #ffffff;
+        --card-bg: #2d2d2d;
+        --accent-color: #4CAF50;
+        --hover-color: #45a049;
+        --border-color: #404040;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        padding: 20px;
+        background: var(--card-bg);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    nav {
+        display: flex;
+        gap: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background: var(--accent-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+        background: var(--hover-color);
+        transform: translateY(-2px);
+    }
+
+    .welcome {
+        text-align: center;
+        margin: 60px 0;
+        padding: 40px;
+        background: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin: 60px 0;
+    }
+
+    .feature-card {
+        padding: 30px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        text-align: center;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-card h3 {
+        color: var(--accent-color);
+        margin-bottom: 15px;
+    }
+
+    .get-started {
+        text-align: center;
+        margin: 60px 0;
+        padding: 40px;
+        background: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-large {
+        padding: 15px 30px;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    h1, h2, h3 {
+        color: var(--text-color);
+    }
+
+    h1 {
+        font-size: 2.5em;
+        margin: 0;
+    }
+
+    h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Flashcards</h1>
+            <nav>
+                <a href="{{ url_for('list_decks') }}" class="btn">My Decks</a>
+                <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="welcome">
+                <h2>Welcome to Flashcards</h2>
+                <p>Create and study flashcard decks to enhance your learning journey.</p>
+            </section>
+
+            <section class="features">
+                <div class="feature-card">
+                    <h3>Create Decks</h3>
+                    <p>Build custom flashcard decks for any subject or topic you want to master</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Import/Export</h3>
+                    <p>Easily manage your decks with CSV file import and export capabilities</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Study Mode</h3>
+                    <p>Engage with an interactive study mode featuring smooth card animations</p>
+                </div>
+            </section>
+
+            <section class="get-started">
+                <h2>Ready to Begin?</h2>
+                <a href="{{ url_for('list_decks') }}" class="btn btn-large">Start Learning Now</a>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

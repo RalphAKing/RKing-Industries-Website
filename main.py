@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, jsonify, send_from_directory
+from flask import Flask, render_template, request, redirect, session, jsonify, send_from_directory,send_file
 import yaml
 from yaml.loader import SafeLoader
 from pymongo import *
@@ -27,7 +27,8 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_caching import Cache
 from flask_compress import Compress
-
+import csv
+from bleach import clean
 
 # Load config.yaml
 with open('config.yaml') as f:
@@ -40,6 +41,8 @@ task_statuses = {}
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'your_secret_key'
 app.jinja_env.globals.update(zip=zip)
+UPLOAD_FOLDER = 'storage'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///whiteboard.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -2248,6 +2251,118 @@ def add_reply():
 
 with app.app_context():
     whiteboarddb.create_all()
+
+
+@app.route('/flashcards')
+def flashcards():
+    return render_template('flashcards.html')
+
+
+@app.route('/deck/create', methods=['POST'])
+def create_deck():
+    if 'userid' not in session:
+        return redirect('/login')
+        
+    deck_name = clean(request.form['deck_name'])
+    file_name = f"{session['userid']}-{deck_name}.csv"
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    
+    if request.files['file']:
+        csv_file = request.files['file']
+        csv_file.save(file_path)
+    else:
+        with open(file_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['question', 'answer'])
+    
+    return redirect(f'/deck/edit/{deck_name}')
+
+@app.route('/deck/download/<deck_name>')
+def download_deck(deck_name):
+    if 'userid' not in session:
+        return redirect('/login?next=/decks')
+        
+    file_name = f"{session['userid']}-{deck_name}.csv"
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    
+    return send_file(
+        file_path,
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name=f"{deck_name}.csv"
+    )
+
+@app.route('/decks')
+def list_decks():
+    if 'userid' not in session:
+        return redirect('/login?next=/decks')
+        
+    user_decks = []
+    for file in os.listdir(app.config['UPLOAD_FOLDER']):
+        if file.startswith(session['userid']):
+            deck_name = file.replace(f"{session['userid']}-", "").replace(".csv", "")
+            user_decks.append(deck_name)
+            
+    return render_template('decks.html', decks=user_decks)
+
+@app.route('/deck/edit/<deck_name>', methods=['GET', 'POST'])
+def edit_deck(deck_name):
+    if 'userid' not in session:
+        return redirect(f'/login?next=/deck/edit/{ deck_name }')
+        
+    file_name = f"{session['userid']}-{deck_name}.csv"
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    
+    if request.method == 'POST':
+        questions = request.form.getlist('question')
+        answers = request.form.getlist('answer')
+        
+        with open(file_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['question', 'answer'])
+            for q, a in zip(questions, answers):
+                writer.writerow([clean(q), clean(a)])
+        return redirect('/decks')
+        
+    cards = []
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as f:
+            reader = csv.DictReader(f)
+            cards = list(reader)
+            
+    return render_template('edit_deck.html', deck_name=deck_name, cards=cards)
+
+@app.route('/study/<deck_name>')
+def study_deck(deck_name):
+    if 'userid' not in session:
+        return redirect(f'/login?next=/study/{deck_name}')
+        
+    file_name = f"{session['userid']}-{deck_name}.csv"
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    
+    cards = []
+    with open(file_path, 'r') as f:
+        reader = csv.DictReader(f)
+        cards = list(reader)
+    
+    if not cards:
+        return redirect(f"/deck/edit/{deck_name}" )
+        
+    return render_template('study.html', deck_name=deck_name, flashcards=cards)
+
+@app.route('/deck/delete/<deck_name>')
+def delete_deck(deck_name):
+    if 'userid' not in session:
+        return redirect('/login?next=/decks')
+        
+    file_name = f"{session['userid']}-{deck_name}.csv"
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        
+    return redirect('/decks')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

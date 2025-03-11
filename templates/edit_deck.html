@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Deck - {{ deck_name }}</title>
+    <style>
+    :root {
+        --bg-color: #1a1a1a;
+        --text-color: #ffffff;
+        --card-bg: #2d2d2d;
+        --accent-color: #4CAF50;
+        --hover-color: #45a049;
+        --border-color: #404040;
+        --input-bg: #333333;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        padding: 20px 0;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    h1 {
+        color: var(--text-color);
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .card-edit {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding: 20px;
+        background: var(--card-bg);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s ease;
+    }
+
+    .card-edit:hover {
+        transform: translateY(-2px);
+    }
+
+    .card-edit input {
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 14px;
+        background: var(--input-bg);
+        color: var(--text-color);
+        transition: border-color 0.3s ease;
+    }
+
+    .card-edit input:focus {
+        border-color: var(--accent-color);
+        outline: none;
+    }
+
+    button {
+        padding: 10px 20px;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    button:hover {
+        background: var(--hover-color);
+    }
+
+    .edit-controls {
+        margin: 30px 0;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        background: var(--accent-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn:hover {
+        background: var(--hover-color);
+        transform: translateY(-2px);
+    }
+
+    .remove-btn {
+        background: #dc3545;
+    }
+
+    .remove-btn:hover {
+        background: #c82333;
+    }
+
+    @media (max-width: 768px) {
+        .card-edit {
+            grid-template-columns: 1fr;
+        }
+        
+        .container {
+            padding: 15px;
+        }
+        
+        .edit-controls {
+            flex-direction: column;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit {{ deck_name }}</h1>
+        
+        <form action="{{ url_for('edit_deck', deck_name=deck_name) }}" method="POST">
+            <div id="cards-container">
+                {% for card in cards %}
+                <div class="card-edit">
+                    <input type="text" name="question" value="{{ card.question }}" placeholder="Enter question" required>
+                    <input type="text" name="answer" value="{{ card.answer }}" placeholder="Enter answer" required>
+                    <button type="button" class="remove-btn" onclick="removeCard(this)">Remove</button>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="edit-controls">
+                <button type="button" onclick="addCard()">Add New Card</button>
+                <button type="submit">Save Changes</button>
+                <a href="{{ url_for('list_decks') }}" class="btn">Back to Decks</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function addCard() {
+            const container = document.getElementById('cards-container');
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card-edit';
+            cardDiv.innerHTML = `
+                <input type="text" name="question" placeholder="Enter question" required>
+                <input type="text" name="answer" placeholder="Enter answer" required>
+                <button type="button" class="remove-btn" onclick="removeCard(this)">Remove</button>
+            `;
+            container.appendChild(cardDiv);
+        }
+
+        function removeCard(button) {
+            button.parentElement.remove();
+        }
+
+        if (document.querySelectorAll('.card-edit').length === 0) {
+            addCard();
+        }
+    </script>
+</body>
+</html>
