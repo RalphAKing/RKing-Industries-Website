@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <title>My Photo Albums</title>
+    <style>
+        :root[data-theme="light"] {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --border-color: #dddddd;
+            --card-bg: #f5f5f5;
+            --hover-color: #e0e0e0;
+        }
+        
+        :root[data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --border-color: #404040;
+            --card-bg: #2d2d2d;
+            --hover-color: #3d3d3d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .album {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .album:hover {
+            transform: translateY(-5px);
+        }
+
+        .share-toggle {
+            cursor: pointer;
+            padding: 8px;
+            background: var(--hover-color);
+            border-radius: 6px;
+            margin: 10px 0;
+            transition: all 0.2s;
+        }
+
+        .share-toggle:hover {
+            opacity: 0.8;
+        }
+
+        .share-link {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin-top: 10px;
+        }
+
+        .create-form {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+        .share-container {
+            margin-top: 15px;
+            background: var(--hover-color);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .share-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .share-header i {
+            font-size: 1.2em;
+        }
+
+        .copy-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .share-link {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .copy-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-button:hover {
+            background: #45a049;
+        }
+
+        .copy-button.copied {
+            background: #2196F3;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: var(--card-bg);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+    <h1>My Photo Albums</h1>
+    
+    <form class="create-form" action="/photoshare/create" method="POST">
+        <input type="text" name="name" placeholder="Album Name" required>
+        <select name="parent">
+            <option value="">No Parent Folder</option>
+            {% for album_id, album in albums.items() %}
+                <option value="{{ album_id }}">{{ album.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Create Album</button>
+    </form>
+
+    <div class="album-grid">
+        {% for album_id, album in albums.items() %}
+            {% if not album.parent %}
+                <div class="album">
+                    <h3>{{ album.name }}</h3>
+                    <p>Photos: {{ album.photos|length }}</p>
+                    <a href="/photoshare/{{ album_id }}">View Album</a>
+                    <div class="share-toggle" onclick="toggleShare('{{ album_id }}')">
+                        {% if album.shared %}
+                            🔓 Shared
+                        {% else %}
+                            🔒 Private
+                        {% endif %}
+                    </div>
+                    {% if album.shared %}
+                        <div class="share-container">
+                            <div class="share-header">
+                                <i>🔗</i>
+                                <span>Share Link</span>
+                            </div>
+                            <div class="copy-container">
+                                <input class="share-link" type="text" readonly 
+                                       value="{{ request.host_url }}photoshare/share/{{ album_id }}">
+                                <button class="copy-button" onclick="copyShareLink(this)">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <script>
+        function copyShareLink(button) {
+            const container = button.closest('.share-container');
+            const input = container.querySelector('.share-link');
+            
+            navigator.clipboard.writeText(input.value).then(() => {
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        function toggleShare(albumId) {
+            fetch(`/photoshare/toggle-share/${albumId}`)
+                .then(response => response.json())
+                .then(data => {
+                    location.reload();
+                });
+        }
+
+        // Set initial theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+</body>
+</html>
