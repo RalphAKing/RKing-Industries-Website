@@ -1049,17 +1049,22 @@
                             assignmentElement.remove();
                         }
 
-                        const submittedSection = document.getElementById('submitted');
-                        const unsubmittedAssignment = document.querySelector(`#unsubmitted [data-assignment-id="${id}"]`);
+
+                        const unsubmittedList = document.getElementById('unsubmitted-list');
+                        const submittedList = document.getElementById('submitted-list');
+                        const unsubmittedAssignment = document.querySelector(`#unsubmitted-list [data-assignment-id="${id}"]`);
+
                         if (unsubmittedAssignment) {
-                            const clone = unsubmittedAssignment.cloneNode(true);
-                            const submitButton = clone.querySelector('button');
+                            unsubmittedList.removeChild(unsubmittedAssignment);
+
+                            const submittedAssignment = unsubmittedAssignment.cloneNode(true);
+                            const submitButton = submittedAssignment.querySelector('.submit-button');
                             if (submitButton) {
-                                submitButton.remove();
+                                submitButton.remove(); 
                             }
-                            submittedSection.querySelector('.scroll-list').appendChild(clone);
-                            unsubmittedAssignment.remove();
+                            submittedList.appendChild(submittedAssignment);
                         }
+
 
                         showAlert("Assignment successfully submitted!", "success");
                     } else {
